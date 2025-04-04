@@ -7,11 +7,11 @@ npm i # only for initial setup
 npm run dev
 ```
 ## Backend
-Run the backend server from the root of the project with
+Run the frontend from `/apps/backend` by
 
 ```bash
 npm i # only for initial setup
-node --env-file=.env apps/backend/index.ts 
+npm run build && npm run dev
 ```
 
 ## Notes
@@ -20,7 +20,8 @@ node --env-file=.env apps/backend/index.ts
 - Aim Part A / B done by sat
 - Aim Part C done by sun
 - Finish prereading by friday
-- Haven't worked on a monorepo in a while, look for best monorepo structure
+- Haven't worked on a monorepo in a while, look for best monorepo structure 
+- setup .env
 
 ### Part A
 - Start by doing through drizzle docs, write notes in obsidian
