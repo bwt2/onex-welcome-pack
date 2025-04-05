@@ -6,6 +6,13 @@ Run the frontend from `/apps/frontend` by
 npm i # only for initial setup
 npm run dev
 ```
+
+Alternatively
+
+```bash
+docker compose up frontend
+```
+
 ## Backend
 Run the frontend from `/apps/backend` by
 
@@ -13,6 +20,29 @@ Run the frontend from `/apps/backend` by
 npm i # only for initial setup
 npm run build && npm run dev
 ```
+
+Alternatively
+
+```bash
+docker compose up server
+```
+
+## Database
+Run 
+
+```bash
+docker compose up db
+```
+
+## Drizzle
+To check the current content of the running postgres database container:
+
+```bash
+cd /apps/backend
+npx drizzle-kit studio
+```
+
+This gives 
 
 ## Notes
 ### General
