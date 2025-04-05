@@ -1,0 +1,17 @@
+FROM node:18-alpine AS base
+WORKDIR /usr/src/app
+
+FROM base AS builder
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --include=dev
+COPY . .
+RUN npm run build
+
+FROM base AS prod
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/package.json /usr/src/app/package-lock.json ./
+RUN npm ci --omit=dev
+USER node
+CMD node dist/index.js

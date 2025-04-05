@@ -1,0 +1,19 @@
+FROM node:18 AS base
+WORKDIR /usr/src/app
+
+FROM base AS builder
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --include=dev
+COPY . .
+RUN npm run build 
+
+FROM base AS prod
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/package.json /usr/src/app/package-lock.json ./
+
+# vite added as dependency just for npm run preview, real prod would use nginx
+RUN npm ci --omit=dev && npm install vite 
+USER node
+CMD npm run preview

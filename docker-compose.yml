@@ -1,0 +1,34 @@
+services:
+  frontend:
+    build: ./apps/frontend
+    container_name: 'onex-welcome-frontend'
+    ports:
+      - 4173:4173
+
+  server:
+    build: ./apps/backend
+    container_name: 'onex-welcome-server'
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
+      - PORT=${EXPRESS_PORT}
+    ports:
+      - ${EXPRESS_PORT}:${EXPRESS_PORT}
+
+  db:
+    image: postgres
+    container_name: 'onex-welcome-db'
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+    - pg_data:/var/lib/postgresql/data
+    ports:
+    - ${POSTGRES_PORT}:${POSTGRES_PORT}
+
+volumes:
+  pg_data:
