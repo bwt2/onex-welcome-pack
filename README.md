@@ -18,7 +18,7 @@ Run the frontend from `/apps/backend` by
 
 ```bash
 npm i # only for initial setup
-npm run build && npm run dev
+npx tsx src/index.ts
 ```
 
 Alternatively
@@ -55,3 +55,4 @@ This gives
 
 ### Part A
 - Start by doing through drizzle docs, write notes in obsidian
+- N+1 issue -> use dataloader ?

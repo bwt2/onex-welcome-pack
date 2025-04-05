@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "dev": "node dist/index.js"
   },
   "keywords": [],
@@ -23,6 +23,9 @@
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
     "express": "^5.1.0",
-    "pg": "^8.14.1"
+    "graphql": "^16.10.0",
+    "graphql-http": "^1.22.4",
+    "pg": "^8.14.1",
+    "ruru": "^2.0.0-beta.19"
   }
 }

@@ -12,7 +12,7 @@ services:
       - .env
     environment:
       - DATABASE_URL=${DATABASE_URL}
-      - PORT=${EXPRESS_PORT}
+      - EXPRESS_PORT=${EXPRESS_PORT}
     ports:
       - ${EXPRESS_PORT}:${EXPRESS_PORT}
     depends_on:
