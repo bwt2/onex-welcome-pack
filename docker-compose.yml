@@ -15,6 +15,9 @@ services:
       - PORT=${EXPRESS_PORT}
     ports:
       - ${EXPRESS_PORT}:${EXPRESS_PORT}
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: postgres
@@ -29,6 +32,11 @@ services:
     - pg_data:/var/lib/postgresql/data
     ports:
     - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 1s # low for easy testing
+      timeout: 10s
+      retries: 5
 
 volumes:
   pg_data:
