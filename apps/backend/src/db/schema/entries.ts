@@ -1,5 +1,5 @@
 import { integer, pgTable, varchar, timestamp, jsonb } from "drizzle-orm/pg-core";
-import { usersTable } from "./users";
+import { usersTable } from "./users.ts";
 
 export const entriesTable = pgTable(
   "entries", 

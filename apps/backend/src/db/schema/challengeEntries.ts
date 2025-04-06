@@ -1,6 +1,6 @@
 import { integer, pgTable, primaryKey } from "drizzle-orm/pg-core";
-import { challengesTable } from "./challenges";
-import { entriesTable } from "./entries";
+import { challengesTable } from "./challenges.ts";
+import { entriesTable } from "./entries.ts";
 
 export const challengeEntries = pgTable(
   "challengeEntries", 

@@ -1,6 +1,6 @@
-import { integer, pgTable, varchar, timestamp, jsonb, text, primaryKey } from "drizzle-orm/pg-core";
-import { gymTable } from "./gyms";
-import { challengesTable } from "./challenges";
+import { integer, pgTable, primaryKey } from "drizzle-orm/pg-core";
+import { gymTable } from "./gyms.ts";
+import { challengesTable } from "./challenges.ts";
 
 export const gymChallenges = pgTable(
   "gymChallenges",
