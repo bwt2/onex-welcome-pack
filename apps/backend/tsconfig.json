@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "target": "ES2020",
     "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src",  
     "skipLibCheck": true,
+    "esModuleInterop": true,        
     "types": []
   },
   "include": ["src"],
