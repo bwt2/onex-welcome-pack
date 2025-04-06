@@ -1,28 +1,51 @@
-type Query {
-    quoteOfTheDay: String
-    random: Float!
-    getDie(numSides: Int): RandomDie
-    getMessage(id: ID!): Message
+# --- Objects ---
+type User {
+    name: String
+    email: String
+    entries: [Entry!]
 }
 
-type Mutation {
-    createMessage(input: MessageInput): Message
-    updateMessage(id: ID!, input: MessageInput): Message
-}
-
-type RandomDie {
-    numSides: Int!
-    rollOnce: Int!
-    roll(numRolls: Int!): [Int]
-}
-
-type Message {
+type Entry {
     id: ID!
-    content: String
-    author: String
+    submissionTime: String
+    challenge: Challenge
+    gym: Gym
 }
 
-input MessageInput {
-    content: String
-    author: String
+type Challenge {
+    id: ID!
+    type: String
+    description: String
+    entries: [Entry!]
+    gym: Gym
+}
+
+type Gym {
+    id: ID!
+    location: String
+    challenges: [Challenge!]
+}
+
+# --- Root ---
+type Query {
+    user(email: String!): User
+    users: [User!]
+
+    entries: [Entry!]
+
+    gyms: [Gym!]
+
+    challenges: [Challenge!]
+}
+
+# --- Mutations ---
+type Mutation {
+    createUser(input: UserInput): User
+}
+
+# --- Inputs ---
+input UserInput {
+  email: String
+  name: String
+  password: String
 }
