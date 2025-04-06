@@ -56,3 +56,4 @@ This gives
 ### Part A
 - Start by doing through drizzle docs, write notes in obsidian
 - N+1 issue -> use dataloader ?
+- https://www.graphql-js.org/docs/authentication-and-express-middleware/
