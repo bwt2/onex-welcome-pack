@@ -1,13 +1,18 @@
-import { Layout } from "./components/layout"
-import { Header } from "./components/header" 
-import { Dashboard } from "./components/dashboard"
+import { Routes, Route } from "react-router-dom"
+import Home from "./pages/home"
+import Login from "./pages/login"
+import { ProtectedRoute } from "./components/ProtectedRoute"
 
 function App() {
   return (
-    <Layout>
-      <Header />
-      <Dashboard />
-    </Layout>
+    <Routes>
+      <Route index element={<Login />} />
+      <Route path="home" element={
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+      } />
+    </Routes>
   )
 }
  

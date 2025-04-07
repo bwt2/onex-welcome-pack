@@ -8,14 +8,14 @@ export class Gym {
     country: string
     state: string | null
     city: string
-    streetAdress: string
+    streetAddress: string
 
-    constructor(gymId: number, country: string, state: string | null, city: string, streetAdress: string) {
+    constructor(gymId: number, country: string, state: string | null, city: string, streetAddress: string) {
         this.gymId = gymId;
         this.country = country;
         this.state = state;
         this.city = city;
-        this.streetAdress = streetAdress;
+        this.streetAddress = streetAddress;
     }
 
     async challenges(_args: any, context: any): Promise<Challenge[]> {

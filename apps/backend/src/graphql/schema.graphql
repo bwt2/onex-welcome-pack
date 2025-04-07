@@ -36,7 +36,7 @@ type Gym {
     country: String!
     state: String
     city: String!
-    streetAdress: String!
+    streetAddress: String!
     # -- ER --
     challenges: [Challenge!]
     # homeGymUsers(?)
@@ -63,6 +63,8 @@ type Mutation {
     createGym(input: GymInput): Gym
     createChallenge(input: ChallengeInput): Challenge
     createEntry(input: EntryInput): Entry
+
+    login(input: LoginInput): User
 }
 
 # --- Inputs ---
@@ -92,6 +94,11 @@ input EntryInput {
     userId: ID!
     submissionTime: String! # ISO 8601-formatted eg 2024-05-01T12:34:56.789Z
     data: JSON!
+}
+
+input LoginInput { 
+    email: String!
+    password: String!
 }
 
 # -- scalars --

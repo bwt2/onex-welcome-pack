@@ -1,6 +1,6 @@
 import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'relay-runtime';
-import type { GymsQuery as GymsQueryType } from './__generated__/GymsQuery.graphql';
+import type { dashboardQuery as DashboardQueryType } from './__generated__/dashboardQuery.graphql';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
     Card,
@@ -10,24 +10,33 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Separator } from "@/components/ui/separator"
+import { useUser } from '@/context/UserContext';
 
-const GymsQuery = graphql`
-  query dashboardQuery {
+const dashboardQuery = graphql`
+  query dashboardQuery($userId: ID!) {
+    user(userId: $userId) {
+      homeGym {
+        gymId
+        city 
+        country
+        streetAddress
+      }
+    }
     gyms {
-        city
+      city
     }
   }
 `;
 
 export function Dashboard() {
-    const data = useLazyLoadQuery<GymsQueryType>(
-        GymsQuery,
-        {},
+    const userContext = useUser();
+    if (!userContext) throw new Error("useUser must be used within a UserProvider");
+    const { user } = userContext;
+
+    const data = useLazyLoadQuery<DashboardQueryType>(
+        dashboardQuery,
+        { userId: String(user?.userId) }
     );
-    const gyms = data.gyms;
-    const gymList = gyms.map((gym) => <li key={1}>{gym.city}</li>)
 
     return (
         <main className="flex flex-1 flex-col items-center justify-center text-white px-50 py-50">
@@ -36,18 +45,19 @@ export function Dashboard() {
                     <TabsTrigger value="account" className='text-white data-[state=active]:bg-slate-600'>My Account</TabsTrigger>
                     <TabsTrigger value="gyms" className='text-white data-[state=active]:bg-slate-600'>My Gyms</TabsTrigger>
                     <TabsTrigger value="entries" className='text-white data-[state=active]:bg-slate-600'>My Entries</TabsTrigger>
-
                 </TabsList>
                 <TabsContent value="account">
                     <Card className="bg-slate-700 text-white border-0 flex">
                         <CardHeader>
                             <CardTitle>
-                                Welcome Back, <span className='font-bold'>Name</span>
+                                Welcome Back, <span className='font-bold'>{user?.name}</span>
                             </CardTitle>
                             <CardDescription className='flex flex-row gap-1'>
-                                <p><span className='font-semibold'>Email - </span>  lorem</p>
+                                <p><span className='font-semibold'>Email - </span>{user?.email}</p>
                                 | 
-                                <p><span className='font-semibold'>Home Gym - </span>  lorem</p>
+                                <p><span className='font-semibold'>Home Gym - </span>  
+                                    {data.user?.homeGym.city}, {data.user?.homeGym.country} @ {data.user?.homeGym.streetAddress} 
+                                </p>
                             </CardDescription>
                         </CardHeader>
                     </Card>
@@ -69,7 +79,7 @@ export function Dashboard() {
                 <TabsContent value="entries">
                     <Card className="bg-slate-700 text-white border-0">
                         <CardHeader>
-                            <CardTitle>Card Title 2</CardTitle>
+                            <CardTitle>My Challenge Entries</CardTitle>
                             <CardDescription>Card Description</CardDescription>
                         </CardHeader>
                         <CardContent>
