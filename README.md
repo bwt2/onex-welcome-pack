@@ -7,24 +7,12 @@ npm i # only for initial setup
 npm run dev
 ```
 
-Alternatively
-
-```bash
-docker compose up frontend
-```
-
 ## Backend
 Run the frontend from `/apps/backend` by
 
 ```bash
 npm i # only for initial setup
 npx tsx src/index.ts
-```
-
-Alternatively
-
-```bash
-docker compose up server
 ```
 
 ## Database
@@ -52,8 +40,7 @@ This gives
 - Finish prereading by friday
 - Haven't worked on a monorepo in a while, look for best monorepo structure 
 - setup .env
-
-### Part A
 - Start by doing through drizzle docs, write notes in obsidian
 - N+1 issue -> use dataloader ?
 - https://www.graphql-js.org/docs/authentication-and-express-middleware/
+- etc..
