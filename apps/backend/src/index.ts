@@ -33,9 +33,6 @@ app.listen(PORT, () => {
 	console.log(`GraphQL running on http://localhost:${PORT}`)
 });
 
-// import { main } from "./test.js";
-// main();
-
 // Run the GraphQL query '{ hello }' and print out the response
 // graphql({
 // 	schema,

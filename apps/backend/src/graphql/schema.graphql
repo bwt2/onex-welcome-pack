@@ -1,28 +1,98 @@
+# --- Objects ---
+# based on database schema and ER diagram
+type User {
+    # -- schema --
+    userId: ID!
+    name: String!
+    email: String!
+    # -- ER --
+    entries: [Entry!]
+    homeGym: Gym!
+}
+
+type Entry {
+    # -- schema --
+    entryId: ID!
+    submissionTime: String!
+    data: JSON!
+    # -- ER --
+    user: User!
+    challenge: Challenge!
+}
+
+type Challenge {
+    # -- schema --
+    challengeId: ID!
+    title: String!
+    type: String!
+    # -- ER --
+    entries: [Entry!]
+    gym: Gym!
+}
+
+type Gym {
+    # -- schema --
+    gymId: ID!
+    country: String!
+    state: String
+    city: String!
+    streetAdress: String!
+    # -- ER --
+    challenges: [Challenge!]
+    # homeGymUsers(?)
+}
+
+# --- Root ---
 type Query {
-    quoteOfTheDay: String
-    random: Float!
-    getDie(numSides: Int): RandomDie
-    getMessage(id: ID!): Message
+    user(userId: ID!): User
+    users: [User!]
+
+    entry(entryId: ID!): Entry
+    entries: [Entry!]
+
+    gym(gymId: ID!): Gym
+    gyms: [Gym!]
+
+    challenge(challengeId: ID!): Challenge
+    challenges: [Challenge!]
 }
 
+# --- Mutations ---
 type Mutation {
-    createMessage(input: MessageInput): Message
-    updateMessage(id: ID!, input: MessageInput): Message
+    createUser(input: UserInput): User
+    createGym(input: GymInput): Gym
+    createChallenge(input: ChallengeInput): Challenge
+    createEntry(input: EntryInput): Entry
 }
 
-type RandomDie {
-    numSides: Int!
-    rollOnce: Int!
-    roll(numRolls: Int!): [Int]
+# --- Inputs ---
+# based on ER diagram
+input UserInput {
+  email: String!
+  name: String!
+  password: String!
+  homeGymId: ID!
 }
 
-type Message {
-    id: ID!
-    content: String
-    author: String
+input GymInput {
+  country: String!
+  state: String
+  city: String!
+  streetAddress: String!
 }
 
-input MessageInput {
-    content: String
-    author: String
+input ChallengeInput {
+    gymId: ID!
+    title: String!
+    type: String!
 }
+
+input EntryInput {
+    challengeId: ID!
+    userId: ID!
+    submissionTime: String! # ISO 8601-formatted eg 2024-05-01T12:34:56.789Z
+    data: JSON!
+}
+
+# -- scalars --
+scalar JSON
