@@ -11,19 +11,67 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { useUser } from '@/context/UserContext';
+import {
+    Command,
+    CommandDialog,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+    CommandShortcut,
+  } from "@/components/ui/command"
+import { useState } from 'react';
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from "@/components/ui/table"
 
 const dashboardQuery = graphql`
   query dashboardQuery($userId: ID!) {
     user(userId: $userId) {
-      homeGym {
-        gymId
-        city 
+        homeGym {
+            gymId
+            city 
+            country
+            streetAddress
+        }
+        entries {
+            submissionTime
+            challenge {
+                title
+                type
+                gym {
+                    gymId
+                    city 
+                    country
+                    streetAddress
+                }
+            }
+            data
+        }
+    }
+    # gym(gymId: $gymId) {
+    #     city
+    #     country
+    #     gymId
+    #     state
+    #     streetAddress
+    #     challenges {
+    #         title
+    #         type
+    #     }
+    # }
+    gyms {
+        city
         country
         streetAddress
-      }
-    }
-    gyms {
-      city
     }
   }
 `;
@@ -33,9 +81,13 @@ export function Dashboard() {
     if (!userContext) throw new Error("useUser must be used within a UserProvider");
     const { user } = userContext;
 
+    const [currGymId , setCurrGymId] = useState(1)
+
     const data = useLazyLoadQuery<DashboardQueryType>(
         dashboardQuery,
-        { userId: String(user?.userId) }
+        {
+            userId: String(user?.userId),
+        }
     );
 
     return (
@@ -50,7 +102,7 @@ export function Dashboard() {
                     <Card className="bg-slate-700 text-white border-0 flex">
                         <CardHeader>
                             <CardTitle>
-                                Welcome Back, <span className='font-bold'>{user?.name}</span>
+                                Welcome Back, {user?.name}
                             </CardTitle>
                             <CardDescription className='flex flex-row gap-1'>
                                 <p><span className='font-semibold'>Email - </span>{user?.email}</p>
@@ -65,29 +117,55 @@ export function Dashboard() {
                 <TabsContent value="gyms">
                     <Card className="bg-slate-700 text-white border-0">
                         <CardHeader>
-                            <CardTitle>Card Title 2</CardTitle>
+                            <CardTitle>My Gyms</CardTitle>
                             <CardDescription>Card Description</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p>Card Content 2</p>
+                            <Command>
+                                <CommandInput placeholder="Search for a Gym" />
+                                <CommandList>
+                                    <CommandEmpty>No results found.</CommandEmpty>
+                                    <CommandGroup heading="Gyms">
+                                        {data.gyms && data.gyms.map((gym) => {
+                                            return <CommandItem>{gym.city}, {gym.country} @ {gym.streetAddress}</CommandItem>;
+                                        })}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                            Gym Id: {currGymId}
                         </CardContent>
-                        <CardFooter>
-                            <p>Card Footer 2</p>
-                        </CardFooter>
                     </Card>
                 </TabsContent>
                 <TabsContent value="entries">
                     <Card className="bg-slate-700 text-white border-0">
                         <CardHeader>
                             <CardTitle>My Challenge Entries</CardTitle>
-                            <CardDescription>Card Description</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p>Card Content 2</p>
+                            <Table>
+                                <TableCaption>All your challenge entries in one place.</TableCaption>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="w-[100px]  text-white">Challenge</TableHead>
+                                        <TableHead className=" text-white">Gym</TableHead>
+                                        <TableHead className=" text-white">Statistics</TableHead>
+                                        <TableHead className=" text-white text-right">Submission Time</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    <TableRow>
+                                        {data.user && data.user.entries && data.user.entries.map((entry) => {
+                                            return <>
+                                                <TableCell>{entry.challenge.title}</TableCell>
+                                                <TableCell>{entry.challenge.gym.city}, {entry.challenge.gym.country} @ {entry.challenge.gym.streetAddress}</TableCell>
+                                                <TableCell>{JSON.stringify(entry.data).replace(/[\])}[{(]/g, '')}</TableCell>
+                                                <TableCell className="text-right">{new Date(Number(entry.submissionTime)).toUTCString()}</TableCell>
+                                            </>;
+                                        })}
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
                         </CardContent>
-                        <CardFooter>
-                            <p>Card Footer 2</p>
-                        </CardFooter>
                     </Card>
                 </TabsContent>
             </Tabs>

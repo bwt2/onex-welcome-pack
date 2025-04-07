@@ -1,6 +1,5 @@
 import { RelayEnvironmentProvider } from "react-relay";
 import { RelayEnvironment } from "./RelayEnvironment";
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { UserProvider } from "./context/UserContext.tsx";
 import { BrowserRouter } from "react-router";
