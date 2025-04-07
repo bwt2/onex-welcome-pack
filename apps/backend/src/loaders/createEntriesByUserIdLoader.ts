@@ -17,9 +17,9 @@ export function createEntriesByUserIdLoader(): DataLoader<number, Entry[]>{
         for (const row of rows) {
           const entry = new Entry(row.entryId, row.userId, row.challengeId, row.submissionTime, row.data);
           if (!userIdToEntries.has(row.entryId)) {
-            userIdToEntries.set(row.entryId, []);
+            userIdToEntries.set(row.userId, []);
           }
-          userIdToEntries.get(row.entryId)!.push(entry);
+          userIdToEntries.get(row.userId)!.push(entry);
         }
         
         return userIds.map((userId) => userIdToEntries.get(userId) ?? []);

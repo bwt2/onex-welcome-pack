@@ -28,11 +28,12 @@ export class User {
     }
 }
 
-export async function user({ userId }: { userId: number }) {
+export async function user({ userId }: { userId: string }) {
+    console.log("uid" + userId)
     const res: userData[] = await db
         .select()
         .from(usersTable)
-        .where(eq(usersTable.userId, userId));
+        .where(eq(usersTable.userId, Number(userId)));
     if (res.length <= 0){
         throw new Error(`Failed to get user: user [${userId}] not found.`)
     }
@@ -96,4 +97,35 @@ export async function createUser({ input }: { input: UserInput }) {
     }
 
     return new User(inserted[0].userId, inserted[0].homeGymId, inserted[0].name, inserted[0].email);
+}
+
+interface loginInput {
+    email: string
+    password: string 
+}
+
+export interface userDataPass {
+    userId: number
+    homeGymId: number
+    name: string
+    email: string
+    password: string
+}
+
+export async function login({ input }: { input: loginInput }): Promise<User> {
+    const { email, password } : loginInput = input;
+    
+    const existing : userDataPass[] = await db
+        .select()
+        .from(usersTable)
+        .where(
+            eq(usersTable.email, email)
+        );
+    if (existing.length <= 0) return null;
+
+    const valid : boolean = await bcrypt.compare(password, existing[0].password);
+    if (!valid) return null;
+
+    const user = existing[0];
+    return new User(user.userId, user.homeGymId, user.name, user.email);
 }
