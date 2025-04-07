@@ -8,22 +8,23 @@ import { gymTable } from "../../db/schema/gyms.ts";
 
 export class User {
     userId: number
+    homeGymId: number
     name: string
     email: string
 
-    constructor(userId: number, name: string, email: string) {
+    constructor(userId: number, homeGymId: number, name: string, email: string) {
         this.userId = userId;
+        this.homeGymId = homeGymId;
         this.email = email;
         this.name = name;
     }
 
-    entries(): Entry[] {
-        // dud
-        return [new Entry(99, new Date(), {'time': '4s'}), new Entry(98, new Date(), {'y': true})];
+    async entries(_args: any, context: any): Promise<Entry[]> {
+        return context.loaders.entriesByUserId.load(this.userId);
     }
 
-    homeGym(): Gym {
-        return new Gym(1,"a", "a", "a", "a"); 
+    async homeGym(_args: any, context: any): Promise<Gym> {
+        return context.loaders.gymByGymId.load(this.homeGymId);
     }
 }
 
@@ -35,19 +36,20 @@ export async function user({ userId }: { userId: number }) {
     if (res.length <= 0){
         throw new Error(`Failed to get user: user [${userId}] not found.`)
     }
-    return new User(res[0].userId, res[0].name, res[0].email);
+    return new User(res[0].userId, res[0].homeGymId, res[0].name, res[0].email);
 }
 
-interface userData {
+export interface userData {
     userId: number
+    homeGymId: number
     name: string
     email: string
 }
 
 export async function users() {
     const res: userData[] = await db.select().from(usersTable);
-    return res.map(({ userId, name, email }) => 
-        new User(userId, name, email)
+    return res.map(({ userId, homeGymId, name, email }) => 
+        new User(userId, homeGymId, name, email)
     ) as User[];
 }
 
@@ -93,5 +95,5 @@ export async function createUser({ input }: { input: UserInput }) {
         throw new Error("Failed to insert user")
     }
 
-    return new User(inserted[0].userId, inserted[0].name, inserted[0].email);
+    return new User(inserted[0].userId, inserted[0].homeGymId, inserted[0].name, inserted[0].email);
 }

@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/client.ts";
 import { gymTable } from "../../db/schema/gyms.ts";
+import { Challenge } from "./Challenge.ts";
 
 export class Gym {
     gymId: number
@@ -17,9 +18,8 @@ export class Gym {
         this.streetAdress = streetAdress;
     }
 
-    challenges() {
-        // dud
-        return []
+    async challenges(_args: any, context: any): Promise<Challenge[]> {
+        return context.loaders.challengesByGymId.load(this.gymId);
     }
 }
 

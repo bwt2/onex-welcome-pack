@@ -1,26 +1,32 @@
-import { Challenge } from "./Challenge.ts";
+import { Challenge, challengeData } from "./Challenge.ts";
 import { db } from "../../db/client.ts";
 import { entriesTable } from "../../db/schema/entries.ts";
-import { User } from "./User.ts";
+import { User, userData } from "./User.ts";
 import { eq } from "drizzle-orm";
+import { usersTable } from "../../db/schema/users.ts";
+import { challengesTable } from "../../db/schema/challenges.ts";
 
 export class Entry {
     entryId: number
+    userId: number
+    challengeId: number
     submissionTime: Date
     data: any // JSON
     
-    constructor(entryId: number, submissionTime: Date, data: any){
+    constructor(entryId: number, userId: number, challengeId: number, submissionTime: Date, data: any){
         this.entryId = entryId;
+        this.userId = userId;
+        this.challengeId = challengeId;
         this.submissionTime = submissionTime;
         this.data = data;
     }
 
-    user(): User {
-        return new User(1, "us1", "email@ks.com");
-
+    async user(_args: any, context: any): Promise<User> {
+        return context.loaders.userByUserId.load(this.userId);
     }
-    challenge(): Challenge {
-        return new Challenge(1, "type", "desc");
+
+    async challenge(_args: any, context: any): Promise<Challenge> {
+        return context.loaders.challengeByChallengeId.load(this.challengeId);
     }
 }
 
@@ -32,19 +38,21 @@ export async function entry({ entryId }: { entryId: number }) {
     if (res.length <= 0){
         throw new Error(`Failed to get entry: entry [${entryId}] not found.`)
     }
-    return new Entry(res[0].entryId, res[0].submissionTime, res[0].data);
+    return new Entry(res[0].entryId, res[0].userId, res[0].challengeId, res[0].submissionTime, res[0].data)
 }
 
 interface entryData {
     entryId: number
+    userId: number
+    challengeId: number
     submissionTime: Date
     data: any // JSON
 }
 
 export async function entries() {
     const res: entryData[] = await db.select().from(entriesTable);
-    return res.map(({ entryId, submissionTime, data }) => 
-        new Entry(entryId, submissionTime, data)
+    return res.map(({ entryId, userId, challengeId, submissionTime, data }) => 
+        new Entry(entryId, userId, challengeId, submissionTime, data)
     ) as Entry[];
 }
 
@@ -72,5 +80,5 @@ export async function createEntry({ input }: { input: EntryInput }) {
         throw new Error("Failed to insert entry")
     }
 
-    return new Entry(inserted[0].entryId, inserted[0].submissionTime, inserted[0].data);
+    return new Entry(inserted[0].entryId, inserted[0].userId, inserted[0].challengeId, inserted[0].submissionTime, inserted[0].data);
 }
