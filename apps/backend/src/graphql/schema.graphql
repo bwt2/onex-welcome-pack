@@ -1,51 +1,98 @@
 # --- Objects ---
+# based on database schema and ER diagram
 type User {
-    name: String
-    email: String
+    # -- schema --
+    userId: ID!
+    name: String!
+    email: String!
+    # -- ER --
     entries: [Entry!]
+    homeGym: Gym!
 }
 
 type Entry {
-    id: ID!
-    submissionTime: String
-    challenge: Challenge
-    gym: Gym
+    # -- schema --
+    entryId: ID!
+    submissionTime: String!
+    data: JSON!
+    # -- ER --
+    user: User!
+    challenge: Challenge!
 }
 
 type Challenge {
-    id: ID!
-    type: String
-    description: String
+    # -- schema --
+    challengeId: ID!
+    title: String!
+    type: String!
+    # -- ER --
     entries: [Entry!]
-    gym: Gym
+    gym: Gym!
 }
 
 type Gym {
-    id: ID!
-    location: String
+    # -- schema --
+    gymId: ID!
+    country: String!
+    state: String
+    city: String!
+    streetAdress: String!
+    # -- ER --
     challenges: [Challenge!]
+    # homeGymUsers(?)
 }
 
 # --- Root ---
 type Query {
-    user(email: String!): User
+    user(userId: ID!): User
     users: [User!]
 
+    entry(entryId: ID!): Entry
     entries: [Entry!]
 
+    gym(gymId: ID!): Gym
     gyms: [Gym!]
 
+    challenge(challengeId: ID!): Challenge
     challenges: [Challenge!]
 }
 
 # --- Mutations ---
 type Mutation {
     createUser(input: UserInput): User
+    createGym(input: GymInput): Gym
+    createChallenge(input: ChallengeInput): Challenge
+    createEntry(input: EntryInput): Entry
 }
 
 # --- Inputs ---
+# based on ER diagram
 input UserInput {
-  email: String
-  name: String
-  password: String
+  email: String!
+  name: String!
+  password: String!
+  homeGymId: ID!
 }
+
+input GymInput {
+  country: String!
+  state: String
+  city: String!
+  streetAddress: String!
+}
+
+input ChallengeInput {
+    gymId: ID!
+    title: String!
+    type: String!
+}
+
+input EntryInput {
+    challengeId: ID!
+    userId: ID!
+    submissionTime: String! # ISO 8601-formatted eg 2024-05-01T12:34:56.789Z
+    data: JSON!
+}
+
+# -- scalars --
+scalar JSON

@@ -1,10 +1,21 @@
-import { pgTable, varchar } from "drizzle-orm/pg-core";
+import { pgTable, varchar, integer, unique } from "drizzle-orm/pg-core";
+import { gymTable } from "./gyms.ts";
+
+/*
+* Two users cannot have the same email
+* Each user belongs to a home gym
+*/
 
 export const usersTable = pgTable(
   "users", 
   {
-    email: varchar({ length: 255 }).notNull().primaryKey(),
+    userId: integer().primaryKey().generatedAlwaysAsIdentity(),
+    homeGymId: integer().notNull().references(() => gymTable.gymId),
+    email: varchar({ length: 255 }).notNull(),
     name: varchar({ length: 255 }).notNull(),
     password: varchar({ length: 255 }).notNull(),
-  }
+  },
+  (table) => [
+    unique().on(table.email) 
+  ]
 );
