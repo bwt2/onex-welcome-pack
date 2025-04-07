@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-
+import cors from 'cors';
 import { ruruHTML } from 'ruru/server';
 import { createHandler } from 'graphql-http/lib/use/express';
 import dotenv from 'dotenv';
@@ -20,6 +20,10 @@ dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 const PORT: number = Number(process.env.EXPRESS_PORT!) || 3000;
 const app = express();
  
+app.use(cors({
+	origin: 'http://localhost:5173',
+}));
+
 // handle all requests to /graphql
 // NOTE: dataloaders aren't passed directly, instead use factory function to ensure new dataloader is used per request (so cross-request batching doesn't occur)
 // NOTE: A batch loading function accepts an Array of keys, and returns a Promise which resolves to an Array of values or Error instances. The loader itself is provided as the this context. 
