@@ -1,5 +1,5 @@
-import { useLazyLoadQuery } from 'react-relay';
-import { graphql } from 'relay-runtime';
+import { useLazyLoadQuery, useMutation } from 'react-relay';
+import { commitMutation, graphql } from 'relay-runtime';
 import type { dashboardQuery as DashboardQueryType } from './__generated__/dashboardQuery.graphql';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -32,6 +32,7 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
+import { Button } from './ui/button';
 
 const dashboardQuery = graphql`
   query dashboardQuery($userId: ID!, $gymId: ID!) {
@@ -77,6 +78,14 @@ const dashboardQuery = graphql`
   }
 `;
 
+const dashboardMutation = graphql`
+  mutation dashboardMutation($input: EntryInput!) {
+    createEntry(input: $input) {
+        entryId
+    }
+  }
+`;
+
 function titleCase(str: string): string {
     return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
 }
@@ -89,6 +98,7 @@ export function Dashboard() {
     const [currGymId , setCurrGymId] = useState(1)
     const [isGymSearchFocused, setIsGymSearchFocused] = useState(false);
     const [searchTerm, setSearchTerm] = useState("")
+    const [commitDashboardMutation, isDashboardMutationInFlight] = useMutation(dashboardMutation);
 
     const data = useLazyLoadQuery<DashboardQueryType>(
         dashboardQuery,
@@ -97,7 +107,19 @@ export function Dashboard() {
             gymId: String(currGymId),
         }
     );
-    console.log(data)
+    
+    function createEntry() {
+        commitDashboardMutation({
+            variables: {
+                input: {
+                    challengeId: "3",
+                    userId: user?.userId,
+                    submissionTime: new Date().toISOString(),
+                    data: "{\"foo\": \"bar\"}"
+                }
+            },
+        })
+    }
 
     return (
         <main className="flex flex-1 flex-col items-center justify-center text-white px-50 py-50">
@@ -198,7 +220,7 @@ export function Dashboard() {
                             <CardDescription>All your challenge entries in one place.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                        <Table>
+                            <Table>
                                 <TableCaption>Updated as of {new Date().toUTCString()}.</TableCaption>
                                 <TableHeader>
                                     <TableRow>
@@ -221,7 +243,7 @@ export function Dashboard() {
                                     })}
                                 </TableBody>
                             </Table>
-                           
+                           <Button onClick={createEntry}>Create New Entry</Button>
                         </CardContent>
                     </Card>
                 </TabsContent>
