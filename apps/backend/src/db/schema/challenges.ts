@@ -17,3 +17,6 @@ export const challengesTable = pgTable(
     unique().on(table.gymId, table.title) 
   ]
 );
+
+export type Challenge =  typeof challengesTable.$inferInsert;
+export type NewChallenge =  typeof challengesTable.$inferSelect;

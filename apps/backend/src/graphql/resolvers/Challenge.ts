@@ -4,7 +4,7 @@ import { challengesTable } from "../../db/schema/challenges.ts";
 import { gymTable } from "../../db/schema/gyms.ts";
 import { and, eq } from "drizzle-orm";
 import { Entry } from "./Entry.ts";
-
+import type { Challenge as PgChallenge } from "../../db/schema/challenges.ts";
 export class Challenge {
     challengeId: number
     gymId: number
@@ -45,6 +45,9 @@ export interface challengeData {
     type: string;
 }
 
+/**
+ * Needs data loader!
+ */
 export async function challenges() {
     const res: challengeData[] = await db.select().from(challengesTable);
     return res.map(({ challengeId, gymId, title, type }) => 
@@ -59,7 +62,7 @@ interface ChallengeInput {
 }
   
 export async function createChallenge({ input }: { input: ChallengeInput }) {
-    const { gymId, title, type } : ChallengeInput = input;
+    const { gymId, title, type } = input;
     
     const res: GymData[] = await db
         .select()
@@ -83,18 +86,20 @@ export async function createChallenge({ input }: { input: ChallengeInput }) {
         throw new Error(`Failed to insert challenge: challenge title [${title}] at gym [${gymId}] already exists.`);
     }
 
-    const challenge: typeof challengesTable.$inferInsert = {
+    const challenge: PgChallenge = {
         gymId,
         title,
         type
     }
-    const inserted : challengeData[] = await db
+
+    const [inserted] = await db
         .insert(challengesTable)
         .values(challenge)
         .returning();
-    if (!inserted || !inserted[0]){
+
+    if (!inserted){
         throw new Error("Failed to insert challenge")
     }
 
-    return new Challenge(inserted[0].challengeId, inserted[0].gymId, inserted[0].title, inserted[0].type);
+    return new Challenge(inserted.challengeId, inserted.gymId, inserted.title, inserted.type);
 }

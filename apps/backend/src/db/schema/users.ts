@@ -19,3 +19,6 @@ export const usersTable = pgTable(
     unique().on(table.email) 
   ]
 );
+
+export type User =  typeof usersTable.$inferInsert;
+export type NewUser =  typeof usersTable.$inferSelect;

@@ -24,3 +24,6 @@ export const gymTable = pgTable(
     ) 
   ]
 );
+
+export type Gym =  typeof gymTable.$inferInsert;
+export type NewGym =  typeof gymTable.$inferSelect;
