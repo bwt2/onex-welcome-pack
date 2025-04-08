@@ -76,12 +76,18 @@ const dashboardQuery = graphql`
   }
 `;
 
+function titleCase(str: string): string {
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+}
+
 export function Dashboard() {
     const userContext = useUser();
     if (!userContext) throw new Error("useUser must be used within a UserProvider");
     const { user } = userContext;
 
     const [currGymId , setCurrGymId] = useState(1)
+    const [isGymSearchFocused, setIsGymSearchFocused] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("")
 
     const data = useLazyLoadQuery<DashboardQueryType>(
         dashboardQuery,
@@ -118,21 +124,38 @@ export function Dashboard() {
                     <Card className="bg-slate-700 text-white border-0">
                         <CardHeader>
                             <CardTitle>My Gyms</CardTitle>
-                            <CardDescription>Card Description</CardDescription>
+                            <CardDescription>All gym locations and challenges in one place.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Command>
-                                <CommandInput placeholder="Search for a Gym" />
-                                <CommandList>
-                                    <CommandEmpty>No results found.</CommandEmpty>
-                                    <CommandGroup heading="Gyms">
-                                        {data.gyms && data.gyms.map((gym) => {
-                                            return <CommandItem>{gym.city}, {gym.country} @ {gym.streetAddress}</CommandItem>;
-                                        })}
-                                    </CommandGroup>
-                                </CommandList>
+                                <CommandInput 
+                                    placeholder={"Search for a Gym"}
+                                    value={searchTerm}
+                                    onValueChange={setSearchTerm}
+                                    onFocus={() => setIsGymSearchFocused(true)}
+                                />
+                                {isGymSearchFocused && 
+                                    <CommandList>
+                                        <CommandEmpty>No results found.</CommandEmpty>
+                                        <CommandGroup heading="Gyms">
+                                            {data.gyms && data.gyms.map((gym) => {
+                                                const label = `${gym.city}, ${gym.country} @ ${gym.streetAddress}`
+                                                return (
+                                                <CommandItem 
+                                                    onSelect={() => {
+                                                        setIsGymSearchFocused(false)
+                                                        setSearchTerm(label)
+                                                    }}
+                                                >
+                                                {label}
+                                                </CommandItem>);
+                                            })}
+                                        </CommandGroup>
+                                    </CommandList>
+                                }
                             </Command>
-                            Gym Id: {currGymId}
+                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione quibusdam praesentium consequuntur. Perferendis voluptas velit suscipit deleniti dicta! Qui quis pariatur voluptatibus cum aut labore a eius, ad dicta voluptates?
+                            </p>
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -140,29 +163,30 @@ export function Dashboard() {
                     <Card className="bg-slate-700 text-white border-0">
                         <CardHeader>
                             <CardTitle>My Challenge Entries</CardTitle>
+                            <CardDescription>All your challenge entries in one place.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Table>
-                                <TableCaption>All your challenge entries in one place.</TableCaption>
+                                <TableCaption>Updated as of {new Date().toUTCString()}.</TableCaption>
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead className="w-[100px]  text-white">Challenge</TableHead>
+                                        <TableHead className=" text-white">Challenge Type</TableHead>
                                         <TableHead className=" text-white">Gym</TableHead>
                                         <TableHead className=" text-white">Statistics</TableHead>
                                         <TableHead className=" text-white text-right">Submission Time</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    <TableRow>
-                                        {data.user && data.user.entries && data.user.entries.map((entry) => {
-                                            return <>
-                                                <TableCell>{entry.challenge.title}</TableCell>
-                                                <TableCell>{entry.challenge.gym.city}, {entry.challenge.gym.country} @ {entry.challenge.gym.streetAddress}</TableCell>
-                                                <TableCell>{JSON.stringify(entry.data).replace(/[\])}[{(]/g, '')}</TableCell>
-                                                <TableCell className="text-right">{new Date(Number(entry.submissionTime)).toUTCString()}</TableCell>
-                                            </>;
-                                        })}
-                                    </TableRow>
+                                    {data.user && data.user.entries && data.user.entries.map((entry) => {
+                                        return <TableRow>
+                                            <TableCell>{titleCase(entry.challenge.title)}</TableCell>
+                                            <TableCell>{titleCase(entry.challenge.type)}</TableCell>
+                                            <TableCell>{entry.challenge.gym.city}, {entry.challenge.gym.country} @ {entry.challenge.gym.streetAddress}</TableCell>
+                                            <TableCell>{JSON.stringify(entry.data).replace(/[\])}[{(]/g, '')}</TableCell>
+                                            <TableCell className="text-right">{new Date(Number(entry.submissionTime)).toUTCString()}</TableCell>
+                                        </TableRow>;
+                                    })}
                                 </TableBody>
                             </Table>
                         </CardContent>

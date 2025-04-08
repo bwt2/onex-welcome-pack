@@ -17,7 +17,8 @@ function App() {
   
   function handleClick(){
     setUser(null);
-    navigate("/")
+    localStorage.clear();
+    navigate("/");
   }
 
   return (
