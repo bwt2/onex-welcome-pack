@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react"
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
 type User = {
     userId: number
@@ -18,10 +18,22 @@ export function useUser() {
 }
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-        {children}
-    </UserContext.Provider>
-  )
+    const [user, setUser] = useState<User | null>(() => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : null;
+      });
+    
+    useEffect(() => {
+    if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+    } else {
+        localStorage.removeItem("user");
+    }
+    }, [user]);
+
+    return (
+        <UserContext.Provider value={{ user, setUser }}>
+            {children}
+        </UserContext.Provider>
+    )
 }
