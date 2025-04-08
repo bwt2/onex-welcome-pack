@@ -22,7 +22,7 @@ import {
     CommandSeparator,
     CommandShortcut,
   } from "@/components/ui/command"
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -34,7 +34,7 @@ import {
   } from "@/components/ui/table"
 
 const dashboardQuery = graphql`
-  query dashboardQuery($userId: ID!) {
+  query dashboardQuery($userId: ID!, $gymId: ID!) {
     user(userId: $userId) {
         homeGym {
             gymId
@@ -57,18 +57,19 @@ const dashboardQuery = graphql`
             data
         }
     }
-    # gym(gymId: $gymId) {
-    #     city
-    #     country
-    #     gymId
-    #     state
-    #     streetAddress
-    #     challenges {
-    #         title
-    #         type
-    #     }
-    # }
+    gym(gymId: $gymId) {
+        city
+        country
+        gymId
+        state
+        streetAddress
+        challenges {
+            title
+            type
+        }
+    }
     gyms {
+        gymId
         city
         country
         streetAddress
@@ -93,8 +94,10 @@ export function Dashboard() {
         dashboardQuery,
         {
             userId: String(user?.userId),
+            gymId: String(currGymId),
         }
     );
+    console.log(data)
 
     return (
         <main className="flex flex-1 flex-col items-center justify-center text-white px-50 py-50">
@@ -110,14 +113,18 @@ export function Dashboard() {
                             <CardTitle>
                                 Welcome Back, {user?.name}
                             </CardTitle>
-                            <CardDescription className='flex flex-row gap-1'>
-                                <p><span className='font-semibold'>Email - </span>{user?.email}</p>
-                                | 
-                                <p><span className='font-semibold'>Home Gym - </span>  
+                        </CardHeader>
+                        <CardContent>
+                                <p><span>Email   : </span>{user?.email}</p>
+                                <p><span>Home Gym: </span>  
                                     {data.user?.homeGym.city}, {data.user?.homeGym.country} @ {data.user?.homeGym.streetAddress} 
                                 </p>
+                        </CardContent>
+                        <CardFooter className="flex justify-center">
+                            <CardDescription>
+                                Updated as of {new Date().toUTCString()}
                             </CardDescription>
-                        </CardHeader>
+                        </CardFooter>
                     </Card>
                 </TabsContent>
                 <TabsContent value="gyms">
@@ -126,7 +133,7 @@ export function Dashboard() {
                             <CardTitle>My Gyms</CardTitle>
                             <CardDescription>All gym locations and challenges in one place.</CardDescription>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="grid gap-4">
                             <Command>
                                 <CommandInput 
                                     placeholder={"Search for a Gym"}
@@ -145,6 +152,9 @@ export function Dashboard() {
                                                     onSelect={() => {
                                                         setIsGymSearchFocused(false)
                                                         setSearchTerm(label)
+                                                        startTransition(() => {
+                                                            setCurrGymId(Number(gym.gymId))
+                                                        });
                                                     }}
                                                 >
                                                 {label}
@@ -154,8 +164,30 @@ export function Dashboard() {
                                     </CommandList>
                                 }
                             </Command>
-                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione quibusdam praesentium consequuntur. Perferendis voluptas velit suscipit deleniti dicta! Qui quis pariatur voluptatibus cum aut labore a eius, ad dicta voluptates?
-                            </p>
+                            {data.gym && <div className='flex flex-row justify-between'>
+                                <p className='text-xl flex-start font-bold'>{data.gym.city}, {data.gym.country} @ {data.gym.streetAddress}</p>
+                                <p className='flex-end'>Gym ID {data.gym.gymId}</p>
+                            </div>}
+                            <h1 className='font-semibold'>Challenges</h1>
+                            <Table>
+                                <TableCaption>Updated as of {new Date().toUTCString()}.</TableCaption>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="w-[100px]  text-white font-semibold">Challenge</TableHead>
+                                        <TableHead className=" text-white font-semibold">Type</TableHead>
+                                        <TableHead className=" text-white font-semibold flex-end">Entries</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {data.gym && data.gym.challenges && data.gym.challenges.map((challenge) => {
+                                        return <TableRow>
+                                            <TableCell>{titleCase(challenge.title)}</TableCell>
+                                            <TableCell>{titleCase(challenge.type)}</TableCell>
+                                            <TableCell>...</TableCell>
+                                        </TableRow>;
+                                    })}
+                                </TableBody>
+                            </Table>
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -166,15 +198,15 @@ export function Dashboard() {
                             <CardDescription>All your challenge entries in one place.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <Table>
+                        <Table>
                                 <TableCaption>Updated as of {new Date().toUTCString()}.</TableCaption>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead className="w-[100px]  text-white">Challenge</TableHead>
-                                        <TableHead className=" text-white">Challenge Type</TableHead>
-                                        <TableHead className=" text-white">Gym</TableHead>
-                                        <TableHead className=" text-white">Statistics</TableHead>
-                                        <TableHead className=" text-white text-right">Submission Time</TableHead>
+                                        <TableHead className="w-[100px]  text-white font-semibold">Challenge</TableHead>
+                                        <TableHead className=" text-white font-semibold">Challenge Type</TableHead>
+                                        <TableHead className=" text-white font-semibold">Gym</TableHead>
+                                        <TableHead className=" text-white font-semibold">Statistics</TableHead>
+                                        <TableHead className=" text-white text-right font-semibold">Submission Time</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -189,6 +221,7 @@ export function Dashboard() {
                                     })}
                                 </TableBody>
                             </Table>
+                           
                         </CardContent>
                     </Card>
                 </TabsContent>

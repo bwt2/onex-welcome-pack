@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<11fd4ae42ec2e7049a787130219c37c5>>
+ * @generated SignedSource<<d6c827afd917ecade5c0f9c2a879daee>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,12 +10,25 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type dashboardQuery$variables = {
+  gymId: string;
   userId: string;
 };
 export type dashboardQuery$data = {
+  readonly gym: {
+    readonly challenges: ReadonlyArray<{
+      readonly title: string;
+      readonly type: string;
+    }> | null | undefined;
+    readonly city: string;
+    readonly country: string;
+    readonly gymId: string;
+    readonly state: string | null | undefined;
+    readonly streetAddress: string;
+  } | null | undefined;
   readonly gyms: ReadonlyArray<{
     readonly city: string;
     readonly country: string;
+    readonly gymId: string;
     readonly streetAddress: string;
   }> | null | undefined;
   readonly user: {
@@ -47,47 +60,65 @@ export type dashboardQuery = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "userId"
-  }
-],
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "gymId"
+},
 v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "city",
-  "storageKey": null
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "userId"
 },
 v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "country",
+  "name": "gymId",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "city",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "country",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "streetAddress",
   "storageKey": null
 },
-v4 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "gymId",
-    "storageKey": null
-  },
-  (v1/*: any*/),
+v6 = [
   (v2/*: any*/),
-  (v3/*: any*/)
+  (v3/*: any*/),
+  (v4/*: any*/),
+  (v5/*: any*/)
 ],
-v5 = [
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "type",
+  "storageKey": null
+},
+v9 = [
   {
     "alias": null,
     "args": [
@@ -109,7 +140,7 @@ v5 = [
         "kind": "LinkedField",
         "name": "homeGym",
         "plural": false,
-        "selections": (v4/*: any*/),
+        "selections": (v6/*: any*/),
         "storageKey": null
       },
       {
@@ -135,20 +166,8 @@ v5 = [
             "name": "challenge",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "title",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "type",
-                "storageKey": null
-              },
+              (v7/*: any*/),
+              (v8/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -156,7 +175,7 @@ v5 = [
                 "kind": "LinkedField",
                 "name": "gym",
                 "plural": false,
-                "selections": (v4/*: any*/),
+                "selections": (v6/*: any*/),
                 "storageKey": null
               }
             ],
@@ -177,47 +196,90 @@ v5 = [
   },
   {
     "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "gymId",
+        "variableName": "gymId"
+      }
+    ],
+    "concreteType": "Gym",
+    "kind": "LinkedField",
+    "name": "gym",
+    "plural": false,
+    "selections": [
+      (v3/*: any*/),
+      (v4/*: any*/),
+      (v2/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "state",
+        "storageKey": null
+      },
+      (v5/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Challenge",
+        "kind": "LinkedField",
+        "name": "challenges",
+        "plural": true,
+        "selections": [
+          (v7/*: any*/),
+          (v8/*: any*/)
+        ],
+        "storageKey": null
+      }
+    ],
+    "storageKey": null
+  },
+  {
+    "alias": null,
     "args": null,
     "concreteType": "Gym",
     "kind": "LinkedField",
     "name": "gyms",
     "plural": true,
-    "selections": [
-      (v1/*: any*/),
-      (v2/*: any*/),
-      (v3/*: any*/)
-    ],
+    "selections": (v6/*: any*/),
     "storageKey": null
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "dashboardQuery",
-    "selections": (v5/*: any*/),
+    "selections": (v9/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "dashboardQuery",
-    "selections": (v5/*: any*/)
+    "selections": (v9/*: any*/)
   },
   "params": {
-    "cacheID": "aba249ea021c98cb7af90dc6075d9356",
+    "cacheID": "2dca9612a3aa18c76c15b8a8c633eeea",
     "id": null,
     "metadata": {},
     "name": "dashboardQuery",
     "operationKind": "query",
-    "text": "query dashboardQuery(\n  $userId: ID!\n) {\n  user(userId: $userId) {\n    homeGym {\n      gymId\n      city\n      country\n      streetAddress\n    }\n    entries {\n      submissionTime\n      challenge {\n        title\n        type\n        gym {\n          gymId\n          city\n          country\n          streetAddress\n        }\n      }\n      data\n    }\n  }\n  gyms {\n    city\n    country\n    streetAddress\n  }\n}\n"
+    "text": "query dashboardQuery(\n  $userId: ID!\n  $gymId: ID!\n) {\n  user(userId: $userId) {\n    homeGym {\n      gymId\n      city\n      country\n      streetAddress\n    }\n    entries {\n      submissionTime\n      challenge {\n        title\n        type\n        gym {\n          gymId\n          city\n          country\n          streetAddress\n        }\n      }\n      data\n    }\n  }\n  gym(gymId: $gymId) {\n    city\n    country\n    gymId\n    state\n    streetAddress\n    challenges {\n      title\n      type\n    }\n  }\n  gyms {\n    gymId\n    city\n    country\n    streetAddress\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8537e215026d98d5135d0b3a80968b26";
+(node as any).hash = "09366a1c8294b5679da21482ab6dce9b";
 
 export default node;
