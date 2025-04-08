@@ -16,3 +16,6 @@ export const entriesTable = pgTable(
     data: jsonb().notNull(),
   }
 );
+
+export type Entry =  typeof entriesTable.$inferInsert;
+export type NewEntry =  typeof entriesTable.$inferSelect;
