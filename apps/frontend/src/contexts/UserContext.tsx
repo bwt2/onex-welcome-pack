@@ -1,15 +1,15 @@
 import { useState, createContext, useMemo, useContext } from "react";
-import { User } from "@@/db/schema/users";
+import { ClientUser } from "@@/db/schema/users";
 
 interface UserContextType {
-    user: User | null; 
-    setUser: React.Dispatch<React.SetStateAction<User | null>>; 
+    user: ClientUser | null; 
+    setUser: React.Dispatch<React.SetStateAction<ClientUser | null>>; 
 }
 
 const userContext = createContext<UserContextType | null>(null);
 
 const UserController = ({ children } : { children : JSX.Element[] | JSX.Element }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<ClientUser | null>(null);
 
     const value = useMemo(() => {
         return { user, setUser }
@@ -31,3 +31,4 @@ const useUser: () => UserContextType = () => {
 };
 
 export { UserController, useUser };
+export type { UserContextType };
