@@ -63,7 +63,7 @@ const LoginForm = () => {
             email: response.login.email,
             homeGymId: Number(response.login.homeGym.gymId),
           });
-          navigate("/home");
+          navigate("/home/my-account");
         }
       },
       onError(error) { console.error('Mutation error', error); },

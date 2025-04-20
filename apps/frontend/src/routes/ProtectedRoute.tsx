@@ -4,12 +4,8 @@ import { ClientUser } from "@@/db/schema/users";
 
 const ProtectedRoute = ({ children } : { children : JSX.Element[] | JSX.Element }) => {
     const { user } : { user: ClientUser | null } = useUser();
-
-    return (
-        <>
-            {user ? (<>{children}</>) : <Navigate to="/" replace />}
-        </>
-    )
+    if (!user) return <Navigate to="/" replace />;
+    return children;
 }
 
 export default ProtectedRoute;
