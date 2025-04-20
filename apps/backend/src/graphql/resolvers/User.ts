@@ -5,22 +5,23 @@ import { eq } from "drizzle-orm";
 import bcrypt from 'bcrypt';
 import { Gym, GymData } from "./Gym.ts";
 import { gymTable } from "../../db/schema/gyms.ts";
+import { v4 as uuidv4 } from 'uuid';
 
 export class User {
-    userId: number
-    homeGymId: number
+    id: string
+    homeGymId: string
     name: string
     email: string
 
-    constructor(userId: number, homeGymId: number, name: string, email: string) {
-        this.userId = userId;
+    constructor(id: string, homeGymId: string, name: string, email: string) {
+        this.id = id;
         this.homeGymId = homeGymId;
         this.email = email;
         this.name = name;
     }
 
     async entries(_args: any, context: any): Promise<Entry[]> {
-        return context.loaders.entriesByUserId.load(this.userId);
+        return context.loaders.entriesByUserId.load(this.id);
     }
 
     async homeGym(_args: any, context: any): Promise<Gym> {
@@ -28,29 +29,28 @@ export class User {
     }
 }
 
-export async function user({ userId }: { userId: string }) {
-    console.log("uid" + userId)
+export async function user({ id }: { id: string }) {
     const res: userData[] = await db
         .select()
         .from(usersTable)
-        .where(eq(usersTable.userId, Number(userId)));
+        .where(eq(usersTable.id, id));
     if (res.length <= 0){
-        throw new Error(`Failed to get user: user [${userId}] not found.`)
+        throw new Error(`Failed to get user: user [${id}] not found.`)
     }
-    return new User(res[0].userId, res[0].homeGymId, res[0].name, res[0].email);
+    return new User(res[0].id, res[0].homeGymId, res[0].name, res[0].email);
 }
 
 export interface userData {
-    userId: number
-    homeGymId: number
+    id: string
+    homeGymId: string
     name: string
     email: string
 }
 
 export async function users() {
     const res: userData[] = await db.select().from(usersTable);
-    return res.map(({ userId, homeGymId, name, email }) => 
-        new User(userId, homeGymId, name, email)
+    return res.map(({ id, homeGymId, name, email }) => 
+        new User(id, homeGymId, name, email)
     ) as User[];
 }
 
@@ -58,7 +58,7 @@ interface UserInput {
     email: string
     name: string
     password: string
-    homeGymId: number
+    homeGymId: string
 }
   
 export async function createUser({ input }: { input: UserInput }) {
@@ -77,12 +77,13 @@ export async function createUser({ input }: { input: UserInput }) {
     const res: GymData[] = await db
         .select()
         .from(gymTable)
-        .where(eq(gymTable.gymId, homeGymId));
+        .where(eq(gymTable.id, homeGymId));
     if (res.length <= 0){
         throw new Error(`Failed to insert user: gym [${homeGymId}] not found.`)
     }
 
     const user: typeof usersTable.$inferInsert = {
+        id: uuidv4(),
         email,
         name,
         homeGymId,
@@ -96,7 +97,7 @@ export async function createUser({ input }: { input: UserInput }) {
         throw new Error("Failed to insert user")
     }
 
-    return new User(inserted[0].userId, inserted[0].homeGymId, inserted[0].name, inserted[0].email);
+    return new User(inserted[0].id, inserted[0].homeGymId, inserted[0].name, inserted[0].email);
 }
 
 interface loginInput {
@@ -105,8 +106,8 @@ interface loginInput {
 }
 
 export interface userDataPass {
-    userId: number
-    homeGymId: number
+    id: string
+    homeGymId: string
     name: string
     email: string
     password: string
@@ -127,5 +128,5 @@ export async function login({ input }: { input: loginInput }): Promise<User> {
     if (!valid) return null;
 
     const user = existing[0];
-    return new User(user.userId, user.homeGymId, user.name, user.email);
+    return new User(user.id, user.homeGymId, user.name, user.email);
 }

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8e51e409424d140c57bc655f18ec6222>>
+ * @generated SignedSource<<367db05c686ee281cb62f3be63e67ddb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,7 +17,7 @@ export type MyGymsFragment$data = {
   }> | null | undefined;
   readonly city: string;
   readonly country: string;
-  readonly gymId: string;
+  readonly id: string;
   readonly state: string | null | undefined;
   readonly streetAddress: string;
   readonly " $fragmentType": "MyGymsFragment";
@@ -27,10 +27,24 @@ export type MyGymsFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"MyGymsFragment">;
 };
 
+import MyGymsRefetchQuery_graphql from './MyGymsRefetchQuery.graphql';
+
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "refetch": {
+      "connection": null,
+      "fragmentPathInResult": [
+        "node"
+      ],
+      "operation": MyGymsRefetchQuery_graphql,
+      "identifierInfo": {
+        "identifierField": "id",
+        "identifierQueryVariableName": "id"
+      }
+    }
+  },
   "name": "MyGymsFragment",
   "selections": [
     {
@@ -51,7 +65,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "gymId",
+      "name": "id",
       "storageKey": null
     },
     {
@@ -98,6 +112,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "3f84849217531b63f404016593d40729";
+(node as any).hash = "0b24c9e817710ea797b0cf36df351f0a";
 
 export default node;

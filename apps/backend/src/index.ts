@@ -6,13 +6,13 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { schema } from './graphql/schema.js';
-import { root } from './graphql/root.js';
-import { createChallengesByGymIdLoader } from './loaders/createChallengesByGymIdLoader.ts';
+
 import { createEntriesByUserIdLoader } from './loaders/createEntriesByUserIdLoader.ts';
 import { createEntriesByChallengeIdLoader } from './loaders/createEntriesByChallengeIdLoader.ts';
 import { createGymByGymIdLoader } from './loaders/createGymByGymIdLoader.ts';
 import { createUserByUserIdLoader } from './loaders/createUserByUserIdLoader.ts';
 import { createChallengeByChallengeIdLoader } from './loaders/createChallengeByChallengeIdLoader.ts';
+import { createChallengesByGymIdLoader } from './loaders/createChallengesByGymIdLoader.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
@@ -31,8 +31,7 @@ app.use(cors({
 app.all(
   '/graphql',
   createHandler({
-	schema: schema,
-	rootValue: root,
+	schema,
 	context: () => ({
 		loaders: {
 		  challengesByGymId: createChallengesByGymIdLoader(), 

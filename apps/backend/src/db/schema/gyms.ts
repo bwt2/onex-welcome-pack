@@ -1,4 +1,4 @@
-import { integer, pgTable, unique, varchar } from "drizzle-orm/pg-core";
+import { pgTable, unique, varchar, uuid } from "drizzle-orm/pg-core";
 
 /*
 * Two gyms need to be is distinct physical locations
@@ -9,9 +9,9 @@ import { integer, pgTable, unique, varchar } from "drizzle-orm/pg-core";
 export const gymTable = pgTable(
   "gyms", 
   {
-    gymId: integer().primaryKey().generatedAlwaysAsIdentity(),
+    id: uuid().primaryKey(),
     country: varchar({ length: 255 }).notNull(),
-    state: varchar({ length: 255 }).notNull().default(""), // stupid drizzle bug forces this to be notnull: https://github.com/drizzle-team/drizzle-orm/issues/2636
+    state: varchar({ length: 255 }).notNull(), // stupid drizzle bug forces this to be notnull: https://github.com/drizzle-team/drizzle-orm/issues/2636
     city: varchar({ length: 255 }).notNull(),
     streetAddress: varchar({ length: 255 }).notNull()
   },

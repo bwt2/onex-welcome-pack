@@ -1,8 +1,12 @@
+interface Node {
+    id: ID!
+}
+
 # --- Objects ---
 # based on database schema and ER diagram
-type User {
+type User implements Node {
     # -- schema --
-    userId: ID!
+    id: ID!
     name: String!
     email: String!
     # -- ER --
@@ -10,9 +14,9 @@ type User {
     homeGym: Gym!
 }
 
-type Entry {
+type Entry implements Node {
     # -- schema --
-    entryId: ID!
+    id: ID!
     submissionTime: String!
     data: JSON!
     # -- ER --
@@ -20,9 +24,9 @@ type Entry {
     challenge: Challenge!
 }
 
-type Challenge {
+type Challenge implements Node {
     # -- schema --
-    challengeId: ID!
+    id: ID!
     title: String!
     type: String!
     # -- ER --
@@ -30,9 +34,9 @@ type Challenge {
     gym: Gym!
 }
 
-type Gym {
+type Gym implements Node {
     # -- schema --
-    gymId: ID!
+    id: ID!
     country: String!
     state: String
     city: String!
@@ -44,16 +48,18 @@ type Gym {
 
 # --- Root ---
 type Query {
-    user(userId: ID!): User
+    node(id: ID!): Node
+
+    user(id: ID!): User
     users: [User!]
 
-    entry(entryId: ID!): Entry
+    entry(id: ID!): Entry
     entries: [Entry!]
 
-    gym(gymId: ID!): Gym
+    gym(id: ID!): Gym
     gyms: [Gym!]
 
-    challenge(challengeId: ID!): Challenge
+    challenge(id: ID!): Challenge
     challenges: [Challenge!]
 }
 

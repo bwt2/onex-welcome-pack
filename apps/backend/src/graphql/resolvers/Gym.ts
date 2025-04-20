@@ -2,16 +2,17 @@ import { and, eq } from "drizzle-orm";
 import { db } from "../../db/client.ts";
 import { gymTable } from "../../db/schema/gyms.ts";
 import { Challenge } from "./Challenge.ts";
+import { v4 as uuidv4 } from 'uuid';
 
 export class Gym {
-    gymId: number
+    id: string
     country: string
-    state: string | null
+    state: string
     city: string
     streetAddress: string
 
-    constructor(gymId: number, country: string, state: string | null, city: string, streetAddress: string) {
-        this.gymId = gymId;
+    constructor(id: string, country: string, state: string, city: string, streetAddress: string) {
+        this.id = id;
         this.country = country;
         this.state = state;
         this.city = city;
@@ -19,39 +20,39 @@ export class Gym {
     }
 
     async challenges(_args: any, context: any): Promise<Challenge[]> {
-        return context.loaders.challengesByGymId.load(this.gymId);
+        return context.loaders.challengesByGymId.load(this.id);
     }
 }
 
-export async function gym({ gymId }: { gymId: number }) {
+export async function gym({ id }: { id: string }) {
     const res: GymData[] = await db
         .select()
         .from(gymTable)
-        .where(eq(gymTable.gymId, gymId));
+        .where(eq(gymTable.id, id));
     if (res.length <= 0){
-        throw new Error(`Failed to get gym: gym [${gymId}] not found.`)
+        throw new Error(`Failed to get gym: gym [${id}] not found.`)
     }
-    return new Gym(res[0].gymId, res[0].country, res[0].state, res[0].city, res[0].streetAddress);
+    return new Gym(res[0].id, res[0].country, res[0].state, res[0].city, res[0].streetAddress);
 }
 
 export interface GymData {
-    gymId: number
+    id: string
     country: string
-    state: string | null
+    state: string
     city: string
     streetAddress: string
 }
 
 export async function gyms() {
     const res: GymData[] = await db.select().from(gymTable);
-    return res.map(({ gymId, country, state, city, streetAddress }) => 
-        new Gym(gymId, country, state, city, streetAddress)
+    return res.map(({ id, country, state, city, streetAddress }) => 
+        new Gym(id, country, state, city, streetAddress)
     ) as Gym[];
 }
 
 interface GymInput {
     country: string
-    state: string | null
+    state: string
     city: string
     streetAddress: string
 }
@@ -65,7 +66,7 @@ export async function createGym({ input }: { input: GymInput }) {
         .where(
             and(
                 eq(gymTable.country, country),
-                eq(gymTable.state, state ?? null),
+                eq(gymTable.state, state),
                 eq(gymTable.city, city),
                 eq(gymTable.streetAddress, streetAddress),
             )
@@ -75,7 +76,9 @@ export async function createGym({ input }: { input: GymInput }) {
     }
 
     const gym: typeof gymTable.$inferInsert = {
+        id: uuidv4(),
         country,
+        state,
         streetAddress,
         city,
     } 
@@ -89,5 +92,5 @@ export async function createGym({ input }: { input: GymInput }) {
         throw new Error("Failed to insert gym")
     }
     
-    return new Gym(inserted[0].gymId, inserted[0].country, inserted[0].state, inserted[0].city, inserted[0].streetAddress);
+    return new Gym(inserted[0].id, inserted[0].country, inserted[0].state, inserted[0].city, inserted[0].streetAddress);
 }

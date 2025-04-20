@@ -14,16 +14,18 @@ import LoginAlert from "@/components/LoginAlert"
 import { useNavigate, NavigateFunction } from "react-router"
 import { useUser } from "@/contexts/UserContext"
 import { UserContextType } from "@/contexts/UserContext"
+import { Toaster } from "@/components/ui/sonner"
 import SignupButton from "@/components/SignupButton"
+import { toast } from "sonner";
 
 const LoginFormMutation = graphql`
   mutation LoginFormMutation($input: LoginInput!) {
     login(input: $input) {
-      userId
+      id
       name
       email
       homeGym {
-        gymId
+        id
       }
     }
   }
@@ -58,15 +60,18 @@ const LoginForm = () => {
         if (errors || !response.login) { setShowAlert(true); } 
         else {
           setUser({
-            userId: Number(response.login.userId),
+            id: response.login.id,
             name: response.login.name,
             email: response.login.email,
-            homeGymId: Number(response.login.homeGym.gymId),
+            homeGymId: response.login.homeGym.id,
           });
           navigate("/home/my-account");
         }
       },
-      onError(error) { console.error('Mutation error', error); },
+      onError(error) { 
+        console.error('Mutation error', error); 
+        toast("Failed to connect to server.");
+      },
     });
   } 
 
@@ -116,6 +121,14 @@ const LoginForm = () => {
         </form>
       </CardContent>
     </div>
+    <Toaster
+        toastOptions={{
+            unstyled: true,
+            classNames: {
+              toast: "bg-slate-800 text-white border border-slate-700 rounded-lg shadow-lg p-2",
+            }
+        }}
+    />
     </>
   )
 }

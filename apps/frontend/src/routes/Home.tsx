@@ -14,11 +14,14 @@ import type { HomeQuery as HomeQueryType } from "./__generated__/HomeQuery.graph
 
 export const HomeQuery = graphql`
   query HomeQuery($userId: ID!, $homeGymId: ID!) {
-    user(userId: $userId) {
+    user(id: $userId) {
         ...MyAccountFragment
     }
-    gym(gymId: $homeGymId) {
+    gym(id: $homeGymId) {
         ...MyGymsFragment
+    }
+    gyms {
+        ...MyGymsListFragment
     }
   }
 `;
@@ -67,10 +70,11 @@ const Home = ({ queryRef }: { queryRef: PreloadedQuery<HomeQueryType> }) => {
                     </HoverCardContent>
                 </HoverCard>
             </header>
-            <main className="flex flex-1 mt-20 justify-center items-center">
+            <main className="min-w-3/4 mt-20 justify-center">
                 <Outlet context={{ 
                     user: data.user,
-                    homeGym: data.gym 
+                    homeGym: data.gym,
+                    gyms: data.gyms
                 }}/>
             </main>
         </main>

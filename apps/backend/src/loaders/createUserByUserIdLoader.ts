@@ -4,20 +4,20 @@ import { inArray } from 'drizzle-orm';
 import { User } from '../graphql/resolvers/User.ts';
 import { usersTable } from '../db/schema/users.ts';
 
-export function createUserByUserIdLoader(): DataLoader<number, User>{
-    return new DataLoader<number, User>(async (userIds: number[]) => {
+export function createUserByUserIdLoader(): DataLoader<string, User>{
+    return new DataLoader<string, User>(async (userIds: string[]) => {
         const rows = await db
             .select()
             .from(usersTable)
-            .where(inArray(usersTable.userId, userIds as number[]));
+            .where(inArray(usersTable.id, userIds as string[]));
 
         // reorder to make dict (key: gymId - value: challenges belonging to gymId) 
-        const userIdToUser = new Map<number, User>();
+        const userIdToUser = new Map<string, User>();
 
         for (const row of rows) {
-          const user = new User(row.userId, row.homeGymId, row.name, row.email);
-          if (!userIdToUser.has(row.userId)) {
-            userIdToUser.set(row.userId, user);
+          const user = new User(row.id, row.homeGymId, row.name, row.email);
+          if (!userIdToUser.has(row.id)) {
+            userIdToUser.set(row.id, user);
           }
         }
         

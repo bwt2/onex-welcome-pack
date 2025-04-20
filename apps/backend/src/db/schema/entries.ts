@@ -1,4 +1,4 @@
-import { integer, pgTable, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { uuid, pgTable, timestamp, jsonb } from "drizzle-orm/pg-core";
 import { usersTable } from "./users.ts";
 import { challengesTable } from "./challenges.ts";
 
@@ -9,9 +9,9 @@ import { challengesTable } from "./challenges.ts";
 export const entriesTable = pgTable(
   "entries", 
   {
-    entryId: integer().primaryKey().generatedAlwaysAsIdentity(),
-    userId: integer().notNull().references(() => usersTable.userId),
-    challengeId: integer().notNull().references(() => challengesTable.challengeId),
+    id: uuid().primaryKey(),
+    userId: uuid().notNull().references(() => usersTable.id),
+    challengeId: uuid().notNull().references(() => challengesTable.id),
     submissionTime: timestamp().notNull(),
     data: jsonb().notNull(),
   }

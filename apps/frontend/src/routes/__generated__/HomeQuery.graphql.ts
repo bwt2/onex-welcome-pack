@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1d3662b7420e994eaeb6cfc7427feaf4>>
+ * @generated SignedSource<<0e8500e5d4f22aa2621ddb29561b0ca1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,6 +18,9 @@ export type HomeQuery$data = {
   readonly gym: {
     readonly " $fragmentSpreads": FragmentRefs<"MyGymsFragment">;
   } | null | undefined;
+  readonly gyms: ReadonlyArray<{
+    readonly " $fragmentSpreads": FragmentRefs<"MyGymsListFragment">;
+  }> | null | undefined;
   readonly user: {
     readonly " $fragmentSpreads": FragmentRefs<"MyAccountFragment">;
   } | null | undefined;
@@ -41,14 +44,14 @@ v1 = {
 v2 = [
   {
     "kind": "Variable",
-    "name": "userId",
+    "name": "id",
     "variableName": "userId"
   }
 ],
 v3 = [
   {
     "kind": "Variable",
-    "name": "gymId",
+    "name": "id",
     "variableName": "homeGymId"
   }
 ],
@@ -63,7 +66,28 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "title",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "country",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "streetAddress",
   "storageKey": null
 };
 return {
@@ -104,6 +128,22 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "MyGymsFragment"
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Gym",
+        "kind": "LinkedField",
+        "name": "gyms",
+        "plural": true,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "MyGymsListFragment"
           }
         ],
         "storageKey": null
@@ -151,7 +191,8 @@ return {
             "name": "homeGym",
             "plural": false,
             "selections": [
-              (v4/*: any*/)
+              (v4/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
@@ -178,13 +219,16 @@ return {
                 "name": "challenge",
                 "plural": false,
                 "selections": [
+                  (v6/*: any*/),
                   (v5/*: any*/)
                 ],
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ],
             "storageKey": null
-          }
+          },
+          (v5/*: any*/)
         ],
         "storageKey": null
       },
@@ -197,20 +241,8 @@ return {
         "plural": false,
         "selections": [
           (v4/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "country",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "gymId",
-            "storageKey": null
-          },
+          (v7/*: any*/),
+          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -218,13 +250,7 @@ return {
             "name": "state",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "streetAddress",
-            "storageKey": null
-          },
+          (v8/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -233,33 +259,49 @@ return {
             "name": "challenges",
             "plural": true,
             "selections": [
-              (v5/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "type",
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ],
             "storageKey": null
           }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Gym",
+        "kind": "LinkedField",
+        "name": "gyms",
+        "plural": true,
+        "selections": [
+          (v5/*: any*/),
+          (v4/*: any*/),
+          (v7/*: any*/),
+          (v8/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "c719d516fa2c691abd63f099a48aed74",
+    "cacheID": "0e4cfb5ce72c5f0993c4a27670d20ff0",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(userId: $userId) {\n    ...MyAccountFragment\n  }\n  gym(gymId: $homeGymId) {\n    ...MyGymsFragment\n  }\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n  }\n  entries {\n    submissionTime\n    challenge {\n      title\n    }\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  gymId\n  state\n  streetAddress\n  challenges {\n    title\n    type\n  }\n}\n"
+    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(id: $userId) {\n    ...MyAccountFragment\n    id\n  }\n  gym(id: $homeGymId) {\n    ...MyGymsFragment\n    id\n  }\n  gyms {\n    ...MyGymsListFragment\n    id\n  }\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n    id\n  }\n  entries {\n    submissionTime\n    challenge {\n      title\n      id\n    }\n    id\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  id\n  state\n  streetAddress\n  challenges {\n    title\n    type\n    id\n  }\n}\n\nfragment MyGymsListFragment on Gym {\n  id\n  city\n  country\n  streetAddress\n}\n"
   }
 };
 })();
 
-(node as any).hash = "2b0a28a04b347c27a24a277ed90dee38";
+(node as any).hash = "c1f61d749701a36c9e194c67b6393d77";
 
 export default node;

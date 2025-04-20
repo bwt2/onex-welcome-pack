@@ -22,6 +22,7 @@ const MyAccountFragment = graphql`
 
 const MyAccount = () => {
     const { user } = useOutletContext<{ user: MyAccountFragment$key }>();
+    console.log("macc", user)
     const data = useFragment<MyAccountFragment$key>(
         MyAccountFragment,
         user,
