@@ -9,7 +9,7 @@ import { Entry } from "./Entry.ts";
 import { Challenge } from "./Challenge.ts";
 import { Gym } from "./Gym.ts";
 
-export async function node({ id }: { id: string }): Promise<User | Entry | Challenge | Gym> {
+export async function node(_parent: any, { id }: { id: string }): Promise<User | Entry | Challenge | Gym> {
   const userRow = await db.select().from(usersTable).where(eq(usersTable.id, id));
   if (userRow.length > 0) {
     const user = userRow[0];

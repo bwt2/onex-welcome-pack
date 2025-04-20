@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<07702296672347c34dd9e92304c6318a>>
+ * @generated SignedSource<<367db05c686ee281cb62f3be63e67ddb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -27,10 +27,24 @@ export type MyGymsFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"MyGymsFragment">;
 };
 
+import MyGymsRefetchQuery_graphql from './MyGymsRefetchQuery.graphql';
+
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "refetch": {
+      "connection": null,
+      "fragmentPathInResult": [
+        "node"
+      ],
+      "operation": MyGymsRefetchQuery_graphql,
+      "identifierInfo": {
+        "identifierField": "id",
+        "identifierQueryVariableName": "id"
+      }
+    }
+  },
   "name": "MyGymsFragment",
   "selections": [
     {
@@ -98,6 +112,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "2a3e0c8286b622948ae387c319a64e82";
+(node as any).hash = "0b24c9e817710ea797b0cf36df351f0a";
 
 export default node;

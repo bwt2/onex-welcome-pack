@@ -1,9 +1,9 @@
 import { graphql } from "relay-runtime";
 import { MyGymsFragment$key } from "./__generated__/MyGymsFragment.graphql";
 import { MyGymsListFragment$key } from "./__generated__/MyGymsListFragment.graphql";
-
 import { useFragment } from "react-relay";
 import { useOutletContext } from "react-router";
+import type { MyGymsRefetchQuery } from './__generated__/MyGymsRefetchQuery.graphql';
 import {
     Command,
     CommandEmpty,
@@ -11,12 +11,12 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command"
-import { useState } from "react";
-// import { useRefetchableFragment } from "react-relay";
+import { startTransition, useState } from "react";
+import { useRefetchableFragment } from "react-relay";
 
 const MyGymsFragment = graphql`
     fragment MyGymsFragment on Gym 
-    # @refetchable(queryName: "MyGymsRefetchQuery") 
+    @refetchable(queryName: "MyGymsRefetchQuery") 
     {
         city
         country
@@ -41,14 +41,14 @@ const MyGymsListFragment = graphql`
 
 const MyGyms = () => {
     const { homeGym } = useOutletContext<{ homeGym: MyGymsFragment$key }>();
-    const myGymData  = useFragment<MyGymsFragment$key>(
-        MyGymsFragment,
-        homeGym
-    );
-    // const [myGymData, refetchGym] = useRefetchableFragment<MyGymsRefetchQuery, MyGymsFragment$key>(
+    // const myGymData  = useFragment<MyGymsFragment$key>(
     //     MyGymsFragment,
     //     homeGym
     // );
+    const [myGymData, refetchGym] = useRefetchableFragment<MyGymsRefetchQuery, MyGymsFragment$key>(
+        MyGymsFragment,
+        homeGym
+    );
 
     const { gyms } = useOutletContext<{ gyms: MyGymsListFragment$key }>();
     const myGymListData = useFragment<MyGymsListFragment$key>(
@@ -85,6 +85,7 @@ const MyGyms = () => {
                                     onSelect={() => {
                                         setOpenSearch(false);
                                         setSearchTerm(label);
+                                        startTransition(() => {refetchGym({ id: gym.id })})
                                     }}
                                     className="bg-slate-700 text-white hover:bg-slate-600 cursor-pointer data-[selected=true]:bg-slate-600 data-[selected=true]:text-white"
                                 >

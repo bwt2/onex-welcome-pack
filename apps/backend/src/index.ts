@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { schema } from './graphql/schema.js';
-import { root } from './graphql/root.js';
+
 import { createEntriesByUserIdLoader } from './loaders/createEntriesByUserIdLoader.ts';
 import { createEntriesByChallengeIdLoader } from './loaders/createEntriesByChallengeIdLoader.ts';
 import { createGymByGymIdLoader } from './loaders/createGymByGymIdLoader.ts';
@@ -31,8 +31,7 @@ app.use(cors({
 app.all(
   '/graphql',
   createHandler({
-	schema: schema,
-	rootValue: root,
+	schema,
 	context: () => ({
 		loaders: {
 		  challengesByGymId: createChallengesByGymIdLoader(), 
