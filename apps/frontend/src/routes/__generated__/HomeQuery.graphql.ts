@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1d3662b7420e994eaeb6cfc7427feaf4>>
+ * @generated SignedSource<<1ef63f10bb39e204a994b47bb110d576>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,6 +18,9 @@ export type HomeQuery$data = {
   readonly gym: {
     readonly " $fragmentSpreads": FragmentRefs<"MyGymsFragment">;
   } | null | undefined;
+  readonly gyms: ReadonlyArray<{
+    readonly " $fragmentSpreads": FragmentRefs<"MyGymsListFragment">;
+  }> | null | undefined;
   readonly user: {
     readonly " $fragmentSpreads": FragmentRefs<"MyAccountFragment">;
   } | null | undefined;
@@ -65,6 +68,27 @@ v5 = {
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "country",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "gymId",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "streetAddress",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -104,6 +128,22 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "MyGymsFragment"
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Gym",
+        "kind": "LinkedField",
+        "name": "gyms",
+        "plural": true,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "MyGymsListFragment"
           }
         ],
         "storageKey": null
@@ -197,20 +237,8 @@ return {
         "plural": false,
         "selections": [
           (v4/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "country",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "gymId",
-            "storageKey": null
-          },
+          (v6/*: any*/),
+          (v7/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -218,13 +246,7 @@ return {
             "name": "state",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "streetAddress",
-            "storageKey": null
-          },
+          (v8/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -246,20 +268,35 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Gym",
+        "kind": "LinkedField",
+        "name": "gyms",
+        "plural": true,
+        "selections": [
+          (v7/*: any*/),
+          (v4/*: any*/),
+          (v6/*: any*/),
+          (v8/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "c719d516fa2c691abd63f099a48aed74",
+    "cacheID": "c46ee8617c9f1830d1bac92adbd18dc2",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(userId: $userId) {\n    ...MyAccountFragment\n  }\n  gym(gymId: $homeGymId) {\n    ...MyGymsFragment\n  }\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n  }\n  entries {\n    submissionTime\n    challenge {\n      title\n    }\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  gymId\n  state\n  streetAddress\n  challenges {\n    title\n    type\n  }\n}\n"
+    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(userId: $userId) {\n    ...MyAccountFragment\n  }\n  gym(gymId: $homeGymId) {\n    ...MyGymsFragment\n  }\n  gyms {\n    ...MyGymsListFragment\n  }\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n  }\n  entries {\n    submissionTime\n    challenge {\n      title\n    }\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  gymId\n  state\n  streetAddress\n  challenges {\n    title\n    type\n  }\n}\n\nfragment MyGymsListFragment on Gym {\n  gymId\n  city\n  country\n  streetAddress\n}\n"
   }
 };
 })();
 
-(node as any).hash = "2b0a28a04b347c27a24a277ed90dee38";
+(node as any).hash = "1d2c33bc832202f684ee2d278b343dd9";
 
 export default node;

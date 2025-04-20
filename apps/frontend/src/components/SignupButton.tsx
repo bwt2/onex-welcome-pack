@@ -81,6 +81,9 @@ const SignupButton = () => {
             <Toaster
                 toastOptions={{
                     unstyled: true,
+                    classNames: {
+                        toast: "bg-slate-800 text-white border border-slate-700 rounded-lg shadow-lg p-2",
+                    }
                 }}
             />
         </>

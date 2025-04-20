@@ -20,6 +20,9 @@ export const HomeQuery = graphql`
     gym(gymId: $homeGymId) {
         ...MyGymsFragment
     }
+    gyms {
+        ...MyGymsListFragment
+    }
   }
 `;
 
@@ -67,10 +70,11 @@ const Home = ({ queryRef }: { queryRef: PreloadedQuery<HomeQueryType> }) => {
                     </HoverCardContent>
                 </HoverCard>
             </header>
-            <main className="flex flex-1 mt-20 justify-center items-center">
+            <main className="min-w-3/4 mt-20 justify-center">
                 <Outlet context={{ 
                     user: data.user,
-                    homeGym: data.gym 
+                    homeGym: data.gym,
+                    gyms: data.gyms
                 }}/>
             </main>
         </main>
