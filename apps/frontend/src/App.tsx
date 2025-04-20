@@ -16,9 +16,9 @@ function App() {
   const [homeQueryRef, loadHomeQuery] = useQueryLoader<HomeQueryType>(HomeQuery);
 
   useEffect(() => {
-    if (user?.userId && user?.homeGymId) {
+    if (user?.id && user?.homeGymId) {
       const HomeQueryVariable = {
-          userId: String(user?.userId),
+          userId: String(user?.id),
           homeGymId: String(user?.homeGymId)
       }
       loadHomeQuery(HomeQueryVariable);

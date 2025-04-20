@@ -21,11 +21,11 @@ import { toast } from "sonner";
 const LoginFormMutation = graphql`
   mutation LoginFormMutation($input: LoginInput!) {
     login(input: $input) {
-      userId
+      id
       name
       email
       homeGym {
-        gymId
+        id
       }
     }
   }
@@ -60,10 +60,10 @@ const LoginForm = () => {
         if (errors || !response.login) { setShowAlert(true); } 
         else {
           setUser({
-            userId: Number(response.login.userId),
+            id: response.login.id,
             name: response.login.name,
             email: response.login.email,
-            homeGymId: Number(response.login.homeGym.gymId),
+            homeGymId: response.login.homeGym.id,
           });
           navigate("/home/my-account");
         }

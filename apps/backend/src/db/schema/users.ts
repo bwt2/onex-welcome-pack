@@ -23,8 +23,8 @@ export const usersTable = pgTable(
 export type User =  typeof usersTable.$inferInsert;
 export type NewUser =  typeof usersTable.$inferSelect;
 export interface ClientUser {
-  userId: number,
+  id: string,
   name: string,
   email: string,
-  homeGymId: number,
+  homeGymId: string,
 }

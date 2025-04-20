@@ -20,7 +20,7 @@ const MyGymsFragment = graphql`
     {
         city
         country
-        gymId
+        id
         state
         streetAddress
         challenges {
@@ -32,7 +32,7 @@ const MyGymsFragment = graphql`
 
 const MyGymsListFragment = graphql`
     fragment MyGymsListFragment on Gym @relay(plural: true) {
-        gymId
+        id
         city
         country
         streetAddress
@@ -81,6 +81,7 @@ const MyGyms = () => {
                             const label: string = `${gym.streetAddress} ${gym.city}, ${gym.country}`
                             return (
                                 <CommandItem
+                                    key={gym.id}
                                     onSelect={() => {
                                         setOpenSearch(false);
                                         setSearchTerm(label);

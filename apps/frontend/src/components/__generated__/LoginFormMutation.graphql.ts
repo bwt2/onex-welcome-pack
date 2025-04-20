@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9caf629f6ff0b5c35eadd4e91aad1b4e>>
+ * @generated SignedSource<<536d5e3c6b1aec6d66f98824e61cf64a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,10 +20,10 @@ export type LoginFormMutation$data = {
   readonly login: {
     readonly email: string;
     readonly homeGym: {
-      readonly gymId: string;
+      readonly id: string;
     };
+    readonly id: string;
     readonly name: string;
-    readonly userId: string;
   } | null | undefined;
 };
 export type LoginFormMutation = {
@@ -39,7 +39,14 @@ var v0 = [
     "name": "input"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
   {
     "alias": null,
     "args": [
@@ -54,13 +61,7 @@ v1 = [
     "name": "login",
     "plural": false,
     "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "userId",
-        "storageKey": null
-      },
+      (v1/*: any*/),
       {
         "alias": null,
         "args": null,
@@ -83,13 +84,7 @@ v1 = [
         "name": "homeGym",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "gymId",
-            "storageKey": null
-          }
+          (v1/*: any*/)
         ],
         "storageKey": null
       }
@@ -103,7 +98,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "LoginFormMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v2/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -112,19 +107,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "LoginFormMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "a85d2b5ecad916c5b324aa2c425a1031",
+    "cacheID": "d19f6e1cb289bbaa3834b376ae402884",
     "id": null,
     "metadata": {},
     "name": "LoginFormMutation",
     "operationKind": "mutation",
-    "text": "mutation LoginFormMutation(\n  $input: LoginInput!\n) {\n  login(input: $input) {\n    userId\n    name\n    email\n    homeGym {\n      gymId\n    }\n  }\n}\n"
+    "text": "mutation LoginFormMutation(\n  $input: LoginInput!\n) {\n  login(input: $input) {\n    id\n    name\n    email\n    homeGym {\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d8dfd3ef0945b9712bf58e501e296174";
+(node as any).hash = "6dcf4b734d6c6e50ecad39a00bfd4df7";
 
 export default node;

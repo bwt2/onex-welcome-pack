@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1ef63f10bb39e204a994b47bb110d576>>
+ * @generated SignedSource<<0e8500e5d4f22aa2621ddb29561b0ca1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -44,14 +44,14 @@ v1 = {
 v2 = [
   {
     "kind": "Variable",
-    "name": "userId",
+    "name": "id",
     "variableName": "userId"
   }
 ],
 v3 = [
   {
     "kind": "Variable",
-    "name": "gymId",
+    "name": "id",
     "variableName": "homeGymId"
   }
 ],
@@ -66,21 +66,21 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "id",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "country",
+  "name": "title",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "gymId",
+  "name": "country",
   "storageKey": null
 },
 v8 = {
@@ -191,7 +191,8 @@ return {
             "name": "homeGym",
             "plural": false,
             "selections": [
-              (v4/*: any*/)
+              (v4/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
@@ -218,13 +219,16 @@ return {
                 "name": "challenge",
                 "plural": false,
                 "selections": [
+                  (v6/*: any*/),
                   (v5/*: any*/)
                 ],
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ],
             "storageKey": null
-          }
+          },
+          (v5/*: any*/)
         ],
         "storageKey": null
       },
@@ -237,8 +241,8 @@ return {
         "plural": false,
         "selections": [
           (v4/*: any*/),
-          (v6/*: any*/),
           (v7/*: any*/),
+          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -255,14 +259,15 @@ return {
             "name": "challenges",
             "plural": true,
             "selections": [
-              (v5/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "type",
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ],
             "storageKey": null
           }
@@ -277,9 +282,9 @@ return {
         "name": "gyms",
         "plural": true,
         "selections": [
-          (v7/*: any*/),
+          (v5/*: any*/),
           (v4/*: any*/),
-          (v6/*: any*/),
+          (v7/*: any*/),
           (v8/*: any*/)
         ],
         "storageKey": null
@@ -287,16 +292,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c46ee8617c9f1830d1bac92adbd18dc2",
+    "cacheID": "0e4cfb5ce72c5f0993c4a27670d20ff0",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(userId: $userId) {\n    ...MyAccountFragment\n  }\n  gym(gymId: $homeGymId) {\n    ...MyGymsFragment\n  }\n  gyms {\n    ...MyGymsListFragment\n  }\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n  }\n  entries {\n    submissionTime\n    challenge {\n      title\n    }\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  gymId\n  state\n  streetAddress\n  challenges {\n    title\n    type\n  }\n}\n\nfragment MyGymsListFragment on Gym {\n  gymId\n  city\n  country\n  streetAddress\n}\n"
+    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(id: $userId) {\n    ...MyAccountFragment\n    id\n  }\n  gym(id: $homeGymId) {\n    ...MyGymsFragment\n    id\n  }\n  gyms {\n    ...MyGymsListFragment\n    id\n  }\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n    id\n  }\n  entries {\n    submissionTime\n    challenge {\n      title\n      id\n    }\n    id\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  id\n  state\n  streetAddress\n  challenges {\n    title\n    type\n    id\n  }\n}\n\nfragment MyGymsListFragment on Gym {\n  id\n  city\n  country\n  streetAddress\n}\n"
   }
 };
 })();
 
-(node as any).hash = "1d2c33bc832202f684ee2d278b343dd9";
+(node as any).hash = "c1f61d749701a36c9e194c67b6393d77";
 
 export default node;

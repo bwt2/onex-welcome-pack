@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f99f57fa9a3c735d06332fbe00494132>>
+ * @generated SignedSource<<f86cbe645876320c850ce6e660a9e9b2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,7 +13,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyGymsListFragment$data = ReadonlyArray<{
   readonly city: string;
   readonly country: string;
-  readonly gymId: string;
+  readonly id: string;
   readonly streetAddress: string;
   readonly " $fragmentType": "MyGymsListFragment";
 }>;
@@ -34,7 +34,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "gymId",
+      "name": "id",
       "storageKey": null
     },
     {
@@ -63,6 +63,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "efe210964ee2bde93933f2bcab375a87";
+(node as any).hash = "3ab141652e1b42bbd9630123904f6785";
 
 export default node;

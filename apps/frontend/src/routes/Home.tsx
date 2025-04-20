@@ -14,10 +14,10 @@ import type { HomeQuery as HomeQueryType } from "./__generated__/HomeQuery.graph
 
 export const HomeQuery = graphql`
   query HomeQuery($userId: ID!, $homeGymId: ID!) {
-    user(userId: $userId) {
+    user(id: $userId) {
         ...MyAccountFragment
     }
-    gym(gymId: $homeGymId) {
+    gym(id: $homeGymId) {
         ...MyGymsFragment
     }
     gyms {

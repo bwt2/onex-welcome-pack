@@ -3,9 +3,12 @@ import { entry, entries, createEntry, Entry as EntryClass } from "./resolvers/En
 import { challenge, challenges, createChallenge, Challenge as ChallengeClass } from "./resolvers/Challenge.ts";
 import { gym, gyms, createGym, Gym as GymClass } from "./resolvers/Gym.ts";
 import GraphQLJSON from 'graphql-type-json';
+import { node } from "./resolvers/Node.ts";
 
 export const root = {
     JSON: GraphQLJSON,
+    
+    node,
 
     login,
 

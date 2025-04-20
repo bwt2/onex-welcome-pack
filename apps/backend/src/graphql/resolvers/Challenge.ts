@@ -5,21 +5,23 @@ import { gymTable } from "../../db/schema/gyms.ts";
 import { and, eq } from "drizzle-orm";
 import { Entry } from "./Entry.ts";
 import type { Challenge as PgChallenge } from "../../db/schema/challenges.ts";
+import { v4 as uuidv4 } from 'uuid';
+
 export class Challenge {
-    challengeId: number
-    gymId: number
+    id: string
+    gymId: string
     title: string
     type: string
     
-    constructor(challengeId: number, gymId: number, title: string, type: string) {
-        this.challengeId = challengeId;
+    constructor(id: string, gymId: string, title: string, type: string) {
+        this.id = id;
         this.title = title;
         this.type = type;
         this.gymId = gymId;
     }
 
     async entries(_args: any, context: any): Promise<Entry[]> {
-        return context.loaders.entriesByChallengeId.load(this.challengeId);
+        return context.loaders.entriesByChallengeId.load(this.id);
     }
 
     async gym(_args: any, context: any): Promise<Gym> {
@@ -27,20 +29,20 @@ export class Challenge {
     }
 } 
 
-export async function challenge({ challengeId }: { challengeId: number }) {
+export async function challenge({ id }: { id: string }) {
     const res: challengeData[] = await db
         .select()
         .from(challengesTable)
-        .where(eq(challengesTable.challengeId, challengeId));
+        .where(eq(challengesTable.id, id));
     if (res.length <= 0){
-        throw new Error(`Failed to get challenge: challenge [${challengeId}] not found.`)
+        throw new Error(`Failed to get challenge: challenge [${id}] not found.`)
     }
-    return new Challenge(res[0].challengeId, res[0].gymId, res[0].title, res[0].type);
+    return new Challenge(res[0].id, res[0].gymId, res[0].title, res[0].type);
 }
 
 export interface challengeData {
-    challengeId: number;
-    gymId: number,
+    id: string;
+    gymId: string,
     title: string;
     type: string;
 }
@@ -50,13 +52,13 @@ export interface challengeData {
  */
 export async function challenges() {
     const res: challengeData[] = await db.select().from(challengesTable);
-    return res.map(({ challengeId, gymId, title, type }) => 
-        new Challenge(challengeId, gymId, title, type)
+    return res.map(({ id, gymId, title, type }) => 
+        new Challenge(id, gymId, title, type)
     ) as Challenge[];
 }
 
 interface ChallengeInput {
-    gymId: number
+    gymId: string
     title: string
     type: string
 }
@@ -67,7 +69,7 @@ export async function createChallenge({ input }: { input: ChallengeInput }) {
     const res: GymData[] = await db
         .select()
         .from(gymTable)
-        .where(eq(gymTable.gymId, gymId));
+        .where(eq(gymTable.id, gymId));
 
     if (res.length <= 0){
         throw new Error(`Failed to insert challenge: gym [${gymId}] not found.`)
@@ -87,6 +89,7 @@ export async function createChallenge({ input }: { input: ChallengeInput }) {
     }
 
     const challenge: PgChallenge = {
+        id: uuidv4(),
         gymId,
         title,
         type
@@ -101,5 +104,5 @@ export async function createChallenge({ input }: { input: ChallengeInput }) {
         throw new Error("Failed to insert challenge")
     }
 
-    return new Challenge(inserted.challengeId, inserted.gymId, inserted.title, inserted.type);
+    return new Challenge(inserted.id, inserted.gymId, inserted.title, inserted.type);
 }

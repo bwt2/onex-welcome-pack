@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8e51e409424d140c57bc655f18ec6222>>
+ * @generated SignedSource<<07702296672347c34dd9e92304c6318a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,7 +17,7 @@ export type MyGymsFragment$data = {
   }> | null | undefined;
   readonly city: string;
   readonly country: string;
-  readonly gymId: string;
+  readonly id: string;
   readonly state: string | null | undefined;
   readonly streetAddress: string;
   readonly " $fragmentType": "MyGymsFragment";
@@ -51,7 +51,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "gymId",
+      "name": "id",
       "storageKey": null
     },
     {
@@ -98,6 +98,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "3f84849217531b63f404016593d40729";
+(node as any).hash = "2a3e0c8286b622948ae387c319a64e82";
 
 export default node;
