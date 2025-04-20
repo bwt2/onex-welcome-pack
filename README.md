@@ -30,7 +30,12 @@ cd /apps/backend
 npx drizzle-kit studio
 ```
 
-This gives 
+To seed / reset the database, drop all tables using `npx drizzle-kit studio` and run 
+
+```bash
+npx drizzle-kit push
+npx tsx apps/backend/src/db/seed.ts
+```
 
 ## Notes
 ### General

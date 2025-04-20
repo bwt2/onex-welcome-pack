@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, unique } from "drizzle-orm/pg-core";
+import { uuid, pgTable, varchar, unique } from "drizzle-orm/pg-core";
 import { gymTable } from "./gyms.ts";
 
 /*
@@ -8,8 +8,8 @@ import { gymTable } from "./gyms.ts";
 export const challengesTable = pgTable(
   "challenges", 
   {
-    challengeId: integer().primaryKey().generatedAlwaysAsIdentity(),
-    gymId: integer().notNull().references(() => gymTable.gymId),
+    id: uuid().primaryKey(),
+    gymId: uuid().notNull().references(() => gymTable.id),
     title: varchar({ length: 255 }).notNull(),
     type: varchar({ length: 255 }).notNull(),
   },

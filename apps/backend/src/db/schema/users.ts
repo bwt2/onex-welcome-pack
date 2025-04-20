@@ -1,4 +1,4 @@
-import { pgTable, varchar, integer, unique } from "drizzle-orm/pg-core";
+import { pgTable, varchar, unique, uuid } from "drizzle-orm/pg-core";
 import { gymTable } from "./gyms.ts";
 
 /*
@@ -9,8 +9,8 @@ import { gymTable } from "./gyms.ts";
 export const usersTable = pgTable(
   "users", 
   {
-    userId: integer().primaryKey().generatedAlwaysAsIdentity(),
-    homeGymId: integer().notNull().references(() => gymTable.gymId),
+    id: uuid().primaryKey(),
+    homeGymId: uuid().notNull().references(() => gymTable.id),
     email: varchar({ length: 255 }).notNull(),
     name: varchar({ length: 255 }).notNull(),
     password: varchar({ length: 255 }).notNull(),
