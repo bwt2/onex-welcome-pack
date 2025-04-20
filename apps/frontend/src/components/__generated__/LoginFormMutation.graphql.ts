@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f9a56f78fb12884a87cd2b8df9fb1448>>
+ * @generated SignedSource<<9caf629f6ff0b5c35eadd4e91aad1b4e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,19 +13,22 @@ export type LoginInput = {
   email: string;
   password: string;
 };
-export type loginMutation$variables = {
+export type LoginFormMutation$variables = {
   input: LoginInput;
 };
-export type loginMutation$data = {
+export type LoginFormMutation$data = {
   readonly login: {
     readonly email: string;
+    readonly homeGym: {
+      readonly gymId: string;
+    };
     readonly name: string;
     readonly userId: string;
   } | null | undefined;
 };
-export type loginMutation = {
-  response: loginMutation$data;
-  variables: loginMutation$variables;
+export type LoginFormMutation = {
+  response: LoginFormMutation$data;
+  variables: LoginFormMutation$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -71,6 +74,24 @@ v1 = [
         "kind": "ScalarField",
         "name": "email",
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Gym",
+        "kind": "LinkedField",
+        "name": "homeGym",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "gymId",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -81,7 +102,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "loginMutation",
+    "name": "LoginFormMutation",
     "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -90,20 +111,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "loginMutation",
+    "name": "LoginFormMutation",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "468e3f6c7a51e6bc5c7a6ab7f8bdb1a7",
+    "cacheID": "a85d2b5ecad916c5b324aa2c425a1031",
     "id": null,
     "metadata": {},
-    "name": "loginMutation",
+    "name": "LoginFormMutation",
     "operationKind": "mutation",
-    "text": "mutation loginMutation(\n  $input: LoginInput!\n) {\n  login(input: $input) {\n    userId\n    name\n    email\n  }\n}\n"
+    "text": "mutation LoginFormMutation(\n  $input: LoginInput!\n) {\n  login(input: $input) {\n    userId\n    name\n    email\n    homeGym {\n      gymId\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "a6c9282b6f62d861fdb67fc1860d350d";
+(node as any).hash = "d8dfd3ef0945b9712bf58e501e296174";
 
 export default node;
