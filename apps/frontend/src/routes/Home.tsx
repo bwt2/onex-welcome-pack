@@ -8,15 +8,28 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { startTransition } from "react";
+import { graphql } from "relay-runtime";
+import { usePreloadedQuery, PreloadedQuery } from "react-relay";
+import type { HomeQuery as HomeQueryType } from "./__generated__/HomeQuery.graphql";
 
-const Home = () => {
-    const { setUser } = useUser();
-
-    const handleLogout = () => {
-        startTransition(() => {
-          setUser(null);
-        });
+export const HomeQuery = graphql`
+  query HomeQuery($userId: ID!, $homeGymId: ID!) {
+    user(userId: $userId) {
+        ...MyAccountFragment
     }
+    gym(gymId: $homeGymId) {
+        ...MyGymsFragment
+    }
+  }
+`;
+
+const Home = ({ queryRef }: { queryRef: PreloadedQuery<HomeQueryType> }) => {
+    const { setUser } = useUser();
+    const handleLogout = () => {
+        startTransition(() => { setUser(null);});
+    }
+
+    const data = usePreloadedQuery(HomeQuery, queryRef);
 
     return (
         <main className="min-h-screen min-w-screen flex flex-col items-center bg-slate-800 relative">
@@ -55,39 +68,13 @@ const Home = () => {
                 </HoverCard>
             </header>
             <main className="flex flex-1 mt-20 justify-center items-center">
-                <Outlet/>
+                <Outlet context={{ 
+                    user: data.user,
+                    homeGym: data.gym 
+                }}/>
             </main>
         </main>
     )
 }
 
 export default Home;
-
-// import { graphql } from "relay-runtime";
-
-// const HomeQuery = graphql`
-//   query HomeQuery($userId: ID!) {
-//     user(userId: $userId) {
-//         homeGym {
-//             gymId
-//             city 
-//             country
-//             streetAddress
-//         }
-//         entries {
-//             submissionTime
-//             challenge {
-//                 title
-//                 type
-//                 gym {
-//                     gymId
-//                     city 
-//                     country
-//                     streetAddress
-//                 }
-//             }
-//             data
-//         }
-//     }
-//   }
-// `;
