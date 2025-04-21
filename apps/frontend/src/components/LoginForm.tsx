@@ -46,7 +46,7 @@ const LoginForm = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const form = e.currentTarget as HTMLFormElement;;
+    const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
 
     const mutationInput: formData = { 
