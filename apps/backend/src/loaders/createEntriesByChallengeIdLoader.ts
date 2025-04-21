@@ -16,10 +16,10 @@ export function createEntriesByChallengeIdLoader(): DataLoader<string, Entry[]>{
 
         for (const row of rows) {
           const entry = new Entry(row.id, row.userId, row.challengeId, row.submissionTime, row.data);
-          if (!challengeIdToEntries.has(row.id)) {
-            challengeIdToEntries.set(row.id, []);
+          if (!challengeIdToEntries.has(row.challengeId)) {
+            challengeIdToEntries.set(row.challengeId, []);
           }
-          challengeIdToEntries.get(row.id)!.push(entry);
+          challengeIdToEntries.get(row.challengeId)!.push(entry);
         }
         
         return challengeIds.map((challengeId) => challengeIdToEntries.get(challengeId) ?? []);

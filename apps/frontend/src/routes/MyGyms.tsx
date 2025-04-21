@@ -4,15 +4,9 @@ import { MyGymsListFragment$key } from "./__generated__/MyGymsListFragment.graph
 import { useFragment } from "react-relay";
 import { useOutletContext } from "react-router";
 import type { MyGymsRefetchQuery } from './__generated__/MyGymsRefetchQuery.graphql';
-import {
-    Command,
-    CommandEmpty,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
-import { startTransition, useState } from "react";
 import { useRefetchableFragment } from "react-relay";
+import GymSection from "@/components/GymSection";
+import GymSearch from "@/components/GymSearch";
 
 const MyGymsFragment = graphql`
     fragment MyGymsFragment on Gym 
@@ -24,8 +18,10 @@ const MyGymsFragment = graphql`
         state
         streetAddress
         challenges {
+            id
             title
             type
+            ...EntriesTableFragment
         }
     }
 `;
@@ -41,10 +37,7 @@ const MyGymsListFragment = graphql`
 
 const MyGyms = () => {
     const { homeGym } = useOutletContext<{ homeGym: MyGymsFragment$key }>();
-    // const myGymData  = useFragment<MyGymsFragment$key>(
-    //     MyGymsFragment,
-    //     homeGym
-    // );
+
     const [myGymData, refetchGym] = useRefetchableFragment<MyGymsRefetchQuery, MyGymsFragment$key>(
         MyGymsFragment,
         homeGym
@@ -56,61 +49,22 @@ const MyGyms = () => {
         gyms
     )
     
-    const [ openSearch, setOpenSearch ] = useState<boolean>(false);
-    const [ searchTerm, setSearchTerm ] = useState<string>("");
-
     return (<>
-    <main className="mt-20 flex gap-5 min-h-50">
-        <section className="relative min-w-1/2"> {/* fixed width is optional */}
-            <Command className={`bg-slate-700 text-white border border-white rounded-md shadow-md flex flex-col overflow-hidden transition-all duration-300 
-                ${openSearch ? "h-auto max-h-50" : "h-auto max-h-10"}`}
-            >
-                <CommandInput
-                    placeholder="Search for a Gym"
-                    onFocus={() => setOpenSearch(true)}
-                    value={searchTerm}
-                    onValueChange={setSearchTerm}
-                    className="bg-slate-700 text-white placeholder-slate-400 border-0"
-                />
-                {openSearch && (
-                    <CommandList className="bg-slate-700 text-white overflow-y-auto">
-                        <CommandEmpty className="bg-slate-700 text-slate-400">
-                            No results found.
-                        </CommandEmpty>
-                        {myGymListData && myGymListData.map((gym)=>{
-                            const label: string = `${gym.streetAddress} ${gym.city}, ${gym.country}`
-                            return (
-                                <CommandItem
-                                    key={gym.id}
-                                    onSelect={() => {
-                                        setOpenSearch(false);
-                                        setSearchTerm(label);
-                                        startTransition(() => {refetchGym({ id: gym.id })})
-                                    }}
-                                    className="bg-slate-700 text-white hover:bg-slate-600 cursor-pointer data-[selected=true]:bg-slate-600 data-[selected=true]:text-white"
-                                >
-                                    {label} 
-                                </CommandItem>
-                            )
-                        })}
-                    </CommandList>
-                )}
-            </Command>
-        </section>
-        <section className="text-2xl text-white">
-            <p>Gym {myGymData.city}, {myGymData.country}!</p>
-            <p>Address {myGymData.state} {myGymData.streetAddress}!</p>
-            <p>Challenges ZZZ!</p>
-        </section>
-    </main>
-    <main className="flex flex-row">
-        <div className="flex flex-1 bg-red-600">
-            a
-        </div>
-        <div className="flex flex-1 bg-blue-500"> 
-            b
-        </div>
-    </main>
+        <main className="mt-20 flex flex-col gap-5 min-h-50">
+            <GymSearch
+                myGymListData={myGymListData}
+                refetchGym={refetchGym}
+            />
+            <section className="text-2xl text-white">
+                <p>You are viewing</p>
+                <h1 className="text-5xl capitalize font-semibold">{myGymData.streetAddress} {myGymData.city}, {myGymData.state} {myGymData.country}</h1>
+            </section>
+        </main>
+        <main className="flex flex-row mt-10 gap-5">
+            <GymSection 
+                myGymData={myGymData}
+            />
+        </main>
     </>)
 }
 
