@@ -44,7 +44,7 @@ const EntriesTable = ({ selectedChallenge, selectedChallengeId }: EntriesTablePr
         }
       }, [selectedChallengeId, refetch]);
 
-    if (!selectedChallenge || !entryData || !entryData.entries) return <p className="text-white">No challenge selected</p>;
+    if (!selectedChallenge || !entryData || !entryData.entries) return <p className="text-white text-xl font-semibold">No challenge selected</p>;
     
     return (
         <Table className="text-white capitalize text-xl">
@@ -52,7 +52,7 @@ const EntriesTable = ({ selectedChallenge, selectedChallengeId }: EntriesTablePr
             <TableHeader>
                 <TableRow>
                     <TableHead  className="text-white font-semibold">User</TableHead>
-                    <TableHead  className="text-white font-semibold">Subsmission Time</TableHead>
+                    <TableHead  className="text-white font-semibold">Submission Time</TableHead>
                     <TableHead  className="text-white font-semibold">Entry</TableHead>
                 </TableRow>
             </TableHeader>

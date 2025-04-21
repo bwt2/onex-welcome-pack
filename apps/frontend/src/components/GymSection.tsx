@@ -16,7 +16,7 @@ const GymSection = ({ myGymData }: { myGymData: MyGymsFragment$data }) => {
                 myGymData={myGymData}
             />
         </div>
-        <div className="flex min-w-1/2 max-w-1/2"> 
+        <div className="flex min-w-1/2 max-w-1/2 justify-center"> 
             <EntriesTable
                 selectedChallenge={challengeRef ?? null}
                 selectedChallengeId={selectedChallengeId} 

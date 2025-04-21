@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<35c19ebad604928ca562ad456da41e39>>
+ * @generated SignedSource<<81355a45484c80c7871e0a5373ae68ec>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,12 +14,21 @@ export type MyAccountFragment$data = {
   readonly email: string;
   readonly entries: ReadonlyArray<{
     readonly challenge: {
+      readonly gym: {
+        readonly city: string;
+        readonly streetAddress: string;
+      };
       readonly title: string;
     };
+    readonly data: any;
+    readonly id: string;
     readonly submissionTime: string;
   }> | null | undefined;
   readonly homeGym: {
     readonly city: string;
+    readonly country: string;
+    readonly state: string | null | undefined;
+    readonly streetAddress: string;
   };
   readonly name: string;
   readonly " $fragmentType": "MyAccountFragment";
@@ -29,7 +38,22 @@ export type MyAccountFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"MyAccountFragment">;
 };
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "city",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "streetAddress",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -57,13 +81,22 @@ const node: ReaderFragment = {
       "name": "homeGym",
       "plural": false,
       "selections": [
+        (v0/*: any*/),
         {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "city",
+          "name": "country",
           "storageKey": null
-        }
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "state",
+          "storageKey": null
+        },
+        (v1/*: any*/)
       ],
       "storageKey": null
     },
@@ -79,7 +112,21 @@ const node: ReaderFragment = {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
+          "name": "id",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "submissionTime",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "data",
           "storageKey": null
         },
         {
@@ -96,6 +143,19 @@ const node: ReaderFragment = {
               "kind": "ScalarField",
               "name": "title",
               "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Gym",
+              "kind": "LinkedField",
+              "name": "gym",
+              "plural": false,
+              "selections": [
+                (v1/*: any*/),
+                (v0/*: any*/)
+              ],
+              "storageKey": null
             }
           ],
           "storageKey": null
@@ -107,7 +167,8 @@ const node: ReaderFragment = {
   "type": "User",
   "abstractKey": null
 };
+})();
 
-(node as any).hash = "dc62976c48df2c43b3403507a27a403b";
+(node as any).hash = "cf429b571ba86d9d24626e9a890f7eb4";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0f559794f8e57a3e47a4fac3f9771beb>>
+ * @generated SignedSource<<a6fe1c9741439cc9378a4bb4056f0608>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -73,35 +73,49 @@ v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "country",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "submissionTime",
+  "name": "state",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "streetAddress",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "country",
+  "name": "id",
   "storageKey": null
 },
 v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "streetAddress",
+  "name": "submissionTime",
+  "storageKey": null
+},
+v11 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "data",
+  "storageKey": null
+},
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
   "storageKey": null
 };
 return {
@@ -200,7 +214,10 @@ return {
             "plural": false,
             "selections": [
               (v5/*: any*/),
-              (v6/*: any*/)
+              (v6/*: any*/),
+              (v7/*: any*/),
+              (v8/*: any*/),
+              (v9/*: any*/)
             ],
             "storageKey": null
           },
@@ -212,7 +229,9 @@ return {
             "name": "entries",
             "plural": true,
             "selections": [
-              (v7/*: any*/),
+              (v9/*: any*/),
+              (v10/*: any*/),
+              (v11/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -221,16 +240,29 @@ return {
                 "name": "challenge",
                 "plural": false,
                 "selections": [
-                  (v8/*: any*/),
-                  (v6/*: any*/)
+                  (v12/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Gym",
+                    "kind": "LinkedField",
+                    "name": "gym",
+                    "plural": false,
+                    "selections": [
+                      (v8/*: any*/),
+                      (v5/*: any*/),
+                      (v9/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  (v9/*: any*/)
                 ],
                 "storageKey": null
-              },
-              (v6/*: any*/)
+              }
             ],
             "storageKey": null
           },
-          (v6/*: any*/)
+          (v9/*: any*/)
         ],
         "storageKey": null
       },
@@ -243,16 +275,10 @@ return {
         "plural": false,
         "selections": [
           (v5/*: any*/),
-          (v9/*: any*/),
           (v6/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "state",
-            "storageKey": null
-          },
-          (v10/*: any*/),
+          (v9/*: any*/),
+          (v7/*: any*/),
+          (v8/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -261,8 +287,8 @@ return {
             "name": "challenges",
             "plural": true,
             "selections": [
-              (v6/*: any*/),
-              (v8/*: any*/),
+              (v9/*: any*/),
+              (v12/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -278,15 +304,9 @@ return {
                 "name": "entries",
                 "plural": true,
                 "selections": [
-                  (v6/*: any*/),
-                  (v7/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "data",
-                    "storageKey": null
-                  },
+                  (v9/*: any*/),
+                  (v10/*: any*/),
+                  (v11/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -296,7 +316,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v4/*: any*/),
-                      (v6/*: any*/)
+                      (v9/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -317,22 +337,22 @@ return {
         "name": "gyms",
         "plural": true,
         "selections": [
-          (v6/*: any*/),
-          (v5/*: any*/),
           (v9/*: any*/),
-          (v10/*: any*/)
+          (v5/*: any*/),
+          (v6/*: any*/),
+          (v8/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "af2b068e5e6e66bf208aedeb0fc27e7e",
+    "cacheID": "25f89b1a7bc43126fa52c1ba10d94162",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(id: $userId) {\n    ...MyAccountFragment\n    id\n  }\n  gym(id: $homeGymId) {\n    ...MyGymsFragment\n    id\n  }\n  gyms {\n    ...MyGymsListFragment\n    id\n  }\n}\n\nfragment EntriesTableFragment on Challenge {\n  entries {\n    id\n    submissionTime\n    data\n    user {\n      name\n      id\n    }\n  }\n  id\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n    id\n  }\n  entries {\n    submissionTime\n    challenge {\n      title\n      id\n    }\n    id\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  id\n  state\n  streetAddress\n  challenges {\n    id\n    title\n    type\n    ...EntriesTableFragment\n  }\n}\n\nfragment MyGymsListFragment on Gym {\n  id\n  city\n  country\n  streetAddress\n}\n"
+    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(id: $userId) {\n    ...MyAccountFragment\n    id\n  }\n  gym(id: $homeGymId) {\n    ...MyGymsFragment\n    id\n  }\n  gyms {\n    ...MyGymsListFragment\n    id\n  }\n}\n\nfragment EntriesTableFragment on Challenge {\n  entries {\n    id\n    submissionTime\n    data\n    user {\n      name\n      id\n    }\n  }\n  id\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n    country\n    state\n    streetAddress\n    id\n  }\n  entries {\n    id\n    submissionTime\n    data\n    challenge {\n      title\n      gym {\n        streetAddress\n        city\n        id\n      }\n      id\n    }\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  id\n  state\n  streetAddress\n  challenges {\n    id\n    title\n    type\n    ...EntriesTableFragment\n  }\n}\n\nfragment MyGymsListFragment on Gym {\n  id\n  city\n  country\n  streetAddress\n}\n"
   }
 };
 })();
