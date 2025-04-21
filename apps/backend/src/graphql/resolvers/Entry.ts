@@ -25,7 +25,7 @@ export class Entry {
     }
 
     async challenge(_args: any, context: any): Promise<Challenge> {
-        return context.loaders.challengeById.load(this.challengeId);
+        return context.loaders.challengeByChallengeId.load(this.challengeId);
     }
 }
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0e8500e5d4f22aa2621ddb29561b0ca1>>
+ * @generated SignedSource<<a6fe1c9741439cc9378a4bb4056f0608>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -59,28 +59,28 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "city",
+  "name": "name",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "city",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "country",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "country",
+  "name": "state",
   "storageKey": null
 },
 v8 = {
@@ -88,6 +88,34 @@ v8 = {
   "args": null,
   "kind": "ScalarField",
   "name": "streetAddress",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "submissionTime",
+  "storageKey": null
+},
+v11 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "data",
+  "storageKey": null
+},
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
   "storageKey": null
 };
 return {
@@ -169,13 +197,7 @@ return {
         "name": "user",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "name",
-            "storageKey": null
-          },
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -191,8 +213,11 @@ return {
             "name": "homeGym",
             "plural": false,
             "selections": [
-              (v4/*: any*/),
-              (v5/*: any*/)
+              (v5/*: any*/),
+              (v6/*: any*/),
+              (v7/*: any*/),
+              (v8/*: any*/),
+              (v9/*: any*/)
             ],
             "storageKey": null
           },
@@ -204,13 +229,9 @@ return {
             "name": "entries",
             "plural": true,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "submissionTime",
-                "storageKey": null
-              },
+              (v9/*: any*/),
+              (v10/*: any*/),
+              (v11/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -219,16 +240,29 @@ return {
                 "name": "challenge",
                 "plural": false,
                 "selections": [
-                  (v6/*: any*/),
-                  (v5/*: any*/)
+                  (v12/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Gym",
+                    "kind": "LinkedField",
+                    "name": "gym",
+                    "plural": false,
+                    "selections": [
+                      (v8/*: any*/),
+                      (v5/*: any*/),
+                      (v9/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  (v9/*: any*/)
                 ],
                 "storageKey": null
-              },
-              (v5/*: any*/)
+              }
             ],
             "storageKey": null
           },
-          (v5/*: any*/)
+          (v9/*: any*/)
         ],
         "storageKey": null
       },
@@ -240,16 +274,10 @@ return {
         "name": "gym",
         "plural": false,
         "selections": [
-          (v4/*: any*/),
-          (v7/*: any*/),
           (v5/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "state",
-            "storageKey": null
-          },
+          (v6/*: any*/),
+          (v9/*: any*/),
+          (v7/*: any*/),
           (v8/*: any*/),
           {
             "alias": null,
@@ -259,7 +287,8 @@ return {
             "name": "challenges",
             "plural": true,
             "selections": [
-              (v6/*: any*/),
+              (v9/*: any*/),
+              (v12/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -267,7 +296,33 @@ return {
                 "name": "type",
                 "storageKey": null
               },
-              (v5/*: any*/)
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Entry",
+                "kind": "LinkedField",
+                "name": "entries",
+                "plural": true,
+                "selections": [
+                  (v9/*: any*/),
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "User",
+                    "kind": "LinkedField",
+                    "name": "user",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/),
+                      (v9/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
             ],
             "storageKey": null
           }
@@ -282,9 +337,9 @@ return {
         "name": "gyms",
         "plural": true,
         "selections": [
+          (v9/*: any*/),
           (v5/*: any*/),
-          (v4/*: any*/),
-          (v7/*: any*/),
+          (v6/*: any*/),
           (v8/*: any*/)
         ],
         "storageKey": null
@@ -292,12 +347,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0e4cfb5ce72c5f0993c4a27670d20ff0",
+    "cacheID": "25f89b1a7bc43126fa52c1ba10d94162",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(id: $userId) {\n    ...MyAccountFragment\n    id\n  }\n  gym(id: $homeGymId) {\n    ...MyGymsFragment\n    id\n  }\n  gyms {\n    ...MyGymsListFragment\n    id\n  }\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n    id\n  }\n  entries {\n    submissionTime\n    challenge {\n      title\n      id\n    }\n    id\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  id\n  state\n  streetAddress\n  challenges {\n    title\n    type\n    id\n  }\n}\n\nfragment MyGymsListFragment on Gym {\n  id\n  city\n  country\n  streetAddress\n}\n"
+    "text": "query HomeQuery(\n  $userId: ID!\n  $homeGymId: ID!\n) {\n  user(id: $userId) {\n    ...MyAccountFragment\n    id\n  }\n  gym(id: $homeGymId) {\n    ...MyGymsFragment\n    id\n  }\n  gyms {\n    ...MyGymsListFragment\n    id\n  }\n}\n\nfragment EntriesTableFragment on Challenge {\n  entries {\n    id\n    submissionTime\n    data\n    user {\n      name\n      id\n    }\n  }\n  id\n}\n\nfragment MyAccountFragment on User {\n  name\n  email\n  homeGym {\n    city\n    country\n    state\n    streetAddress\n    id\n  }\n  entries {\n    id\n    submissionTime\n    data\n    challenge {\n      title\n      gym {\n        streetAddress\n        city\n        id\n      }\n      id\n    }\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  id\n  state\n  streetAddress\n  challenges {\n    id\n    title\n    type\n    ...EntriesTableFragment\n  }\n}\n\nfragment MyGymsListFragment on Gym {\n  id\n  city\n  country\n  streetAddress\n}\n"
   }
 };
 })();

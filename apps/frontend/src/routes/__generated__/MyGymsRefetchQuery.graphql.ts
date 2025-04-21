@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2ec2013d3c5d2c1532ffae32ad53f0aa>>
+ * @generated SignedSource<<71668c57132b7e6024abf14c1044f9dc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -133,6 +133,7 @@ return {
                 "name": "challenges",
                 "plural": true,
                 "selections": [
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -147,7 +148,51 @@ return {
                     "name": "type",
                     "storageKey": null
                   },
-                  (v2/*: any*/)
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Entry",
+                    "kind": "LinkedField",
+                    "name": "entries",
+                    "plural": true,
+                    "selections": [
+                      (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "submissionTime",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "data",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "User",
+                        "kind": "LinkedField",
+                        "name": "user",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -161,16 +206,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "805e92b564f7b75ed88b8a968c4e4784",
+    "cacheID": "190890d67067cd671aa7bd7b268cbac3",
     "id": null,
     "metadata": {},
     "name": "MyGymsRefetchQuery",
     "operationKind": "query",
-    "text": "query MyGymsRefetchQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...MyGymsFragment\n    id\n  }\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  id\n  state\n  streetAddress\n  challenges {\n    title\n    type\n    id\n  }\n}\n"
+    "text": "query MyGymsRefetchQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...MyGymsFragment\n    id\n  }\n}\n\nfragment EntriesTableFragment on Challenge {\n  entries {\n    id\n    submissionTime\n    data\n    user {\n      name\n      id\n    }\n  }\n  id\n}\n\nfragment MyGymsFragment on Gym {\n  city\n  country\n  id\n  state\n  streetAddress\n  challenges {\n    id\n    title\n    type\n    ...EntriesTableFragment\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "0b24c9e817710ea797b0cf36df351f0a";
+(node as any).hash = "ed577a8d66f57cfa7c2b7547dd3d7e96";
 
 export default node;

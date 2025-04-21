@@ -44,7 +44,7 @@ const Home = ({ queryRef }: { queryRef: PreloadedQuery<HomeQueryType> }) => {
                         </Button>
                     </HoverCardTrigger>
                     <HoverCardContent className="bg-slate-700 text-white text-center">
-                        Account details.
+                        Your account details and challenge entries.
                     </HoverCardContent>
                 </HoverCard>
                 <Separator orientation="vertical" className="min-h-7 border-slate-600"/>
@@ -55,7 +55,8 @@ const Home = ({ queryRef }: { queryRef: PreloadedQuery<HomeQueryType> }) => {
                         </Button>
                     </HoverCardTrigger>
                     <HoverCardContent className="bg-slate-700 text-white text-center">
-                        Gyms.
+                        View gyms, their challenges, and their entries here.
+                        Submit entries here.
                     </HoverCardContent>
                 </HoverCard>
                 <Separator orientation="vertical" className="min-h-7 border-slate-600"/>

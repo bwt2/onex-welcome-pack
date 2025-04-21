@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<367db05c686ee281cb62f3be63e67ddb>>
+ * @generated SignedSource<<744204bf25804d13c01f35957c003ad5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,8 +12,10 @@ import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type MyGymsFragment$data = {
   readonly challenges: ReadonlyArray<{
+    readonly id: string;
     readonly title: string;
     readonly type: string;
+    readonly " $fragmentSpreads": FragmentRefs<"EntriesTableFragment">;
   }> | null | undefined;
   readonly city: string;
   readonly country: string;
@@ -29,7 +31,15 @@ export type MyGymsFragment$key = {
 
 import MyGymsRefetchQuery_graphql from './MyGymsRefetchQuery.graphql';
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": {
@@ -61,13 +71,7 @@ const node: ReaderFragment = {
       "name": "country",
       "storageKey": null
     },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -90,6 +94,7 @@ const node: ReaderFragment = {
       "name": "challenges",
       "plural": true,
       "selections": [
+        (v0/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -103,6 +108,11 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "name": "type",
           "storageKey": null
+        },
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "EntriesTableFragment"
         }
       ],
       "storageKey": null
@@ -111,7 +121,8 @@ const node: ReaderFragment = {
   "type": "Gym",
   "abstractKey": null
 };
+})();
 
-(node as any).hash = "0b24c9e817710ea797b0cf36df351f0a";
+(node as any).hash = "ed577a8d66f57cfa7c2b7547dd3d7e96";
 
 export default node;
